@@ -1,0 +1,155 @@
+import Replicate from "replicate";
+import { getLatestPostFromUser } from "./appwrite";
+
+
+// {
+//     input: {
+//         stream: false,
+//         seed: 2862431,
+//         image: "https://cloud.appwrite.io/v1/storage/buckets/67af758100225e7d0b39/files/6802dcaa0018bd843d72/preview?project=67af647f003752394997"
+//     }
+// }
+
+// imageUrlToBase64("https://images.stockcake.com/public/3/2/1/321f2639-f47c-41e4-9ef1-2364f3c21713_medium/soulful-canine-portrait-stockcake.jpg")
+//     .then(base64 => {
+//         console.log(base64); // Data URL like: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQE...
+//     })
+//     .catch(error => {
+//         console.error('Error converting image:', error);
+//     });
+
+async function imageUrlToBase64(url: any) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+
+export const checkImageByUrl = async (url: any) => {
+    const prompt = process.env.EXPO_PUBLIC_REPLICATE_PROMPT;
+    const model: any = `${process.env.EXPO_PUBLIC_REPLICATE_MODEL_NAME}/${process.env.EXPO_PUBLIC_REPLICATE_MODEL_ENDPOINT}`;
+    const replicate = new Replicate({
+        auth: process.env.EXPO_PUBLIC_REPLICATE_API_TOKEN,
+    });
+
+    const isThisADog = async (imageUrl: any) => {
+        try {
+            const output: any = await replicate.run(
+                model,
+                {
+                    input: {
+                        image: imageUrl,
+                        top_p: 1,
+                        prompt: prompt,
+                        max_tokens: 1024,
+                        temperature: 0.2
+                    }
+                }
+            );
+
+            return output[0]?.toLowerCase() === "true";
+
+        } catch (error: any) {
+            console.error("Error with API: ", error);
+            return false;
+        }
+    };
+
+    const isDog: boolean = await isThisADog(url);
+    return isDog;
+}
+
+export const getPredictionById = async (predictionId: string) => {
+    try {
+        const response = await fetch(`https://api.replicate.com/v1/predictions/${predictionId}`, {
+            // const response = await fetch(`https://api.replicate.com/v1/predictions/626rsxvr5hrmc0cpar9aw3fdng`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Token ${process.env.EXPO_PUBLIC_REPLICATE_API_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch prediction: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        return data;
+    } catch (error: any) {
+        throw new Error('Failed to fetch prediction');
+    }
+};
+
+export const cartoonize = async (imageUrl: any) => {
+    const replicate = new Replicate({
+        auth: `${process.env.EXPO_PUBLIC_REPLICATE_API_TOKEN}`
+    });
+
+    try {
+        const output: any = await replicate.predictions.create({
+            model: `${process.env.EXPO_PUBLIC_REPLICATE_CARTOON_MODEL_NAME}`,
+            version: `${process.env.EXPO_PUBLIC_REPLICATE_CARTOON_MODEL_VERSION}`,
+            input: {
+                // seed: 2862431,
+                seed: 2144727,
+                image: imageUrl
+            }
+        })
+
+        return output.id
+
+    } catch (error: any) {
+        console.log('Error', error);
+        throw new Error(error);
+    }
+};
+
+
+
+// export const checkLatestImageDog = async (userId: any, isThumbnail: boolean) => {
+//     const prompt = process.env.EXPO_PUBLIC_REPLICATE_PROMPT;
+//     const model: any = `${process.env.EXPO_PUBLIC_REPLICATE_MODEL_NAME}/${process.env.EXPO_PUBLIC_REPLICATE_MODEL_ENDPOINT}`;
+//     const replicate = new Replicate({
+//         auth: process.env.EXPO_PUBLIC_REPLICATE_API_TOKEN,
+//     });
+
+//     const isThisADog = async (imageUrl: any) => {
+//         try {
+//             const output: any = await replicate.run(
+//                 model,
+//                 {
+//                     input: {
+//                         image: imageUrl,
+//                         top_p: 1,
+//                         prompt: prompt,
+//                         max_tokens: 1024,
+//                         temperature: 0.2
+//                     }
+//                 }
+//             );
+
+//             return output[0]?.toLowerCase() === "true";
+
+//         } catch (error: any) {
+//             console.error("Error with API: ", error);
+//             return false;
+//         }
+//     };
+
+//     const { url, id }: any = await getLatestPostFromUser(userId, isThumbnail);
+//     if (!url) return;
+
+//     const isDog: boolean = await isThisADog(url);
+
+//     if (!isDog) {
+//         Alert.alert("Post removed", `Post was not of a dog. ${isThumbnail ? "Try a different Thumbnail" : "Try a different Image"}`);
+//         await deleteMedia(id);
+//     }
+// };
