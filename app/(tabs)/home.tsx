@@ -5,17 +5,36 @@ import { images } from '../../constants'
 import SearchInput from '@/components/SearchInput'
 import Trending from '@/components/Trending'
 import EmptyState from '@/components/EmptyState'
-import { getAllPosts, getLatestPosts } from '@/lib/appwrite'
+import { getAllPosts, getLatestPostFromUser } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
 import VideoCard from '@/components/VideoCard'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import LoadingScreen from "@/components/LoadingScreen";
+import Following from '@/components/Following'
 
 const Home = () => {
+  const { user } = useGlobalContext();
+
+  const [followers] = useState(user.following)
+  const [followerLatest, setFollowerLatest] = useState<any[]>([]);
+
+
   const [refreshing, setRefreshing] = useState(false);
   const { data: posts, refetch } = useAppwrite(getAllPosts);
-  const { data: latestPosts } = useAppwrite(getLatestPosts);
-  const { user } = useGlobalContext();
+  // const { data: latestPosts } = useAppwrite(getLatestPosts);
+
+  useEffect(() => {
+    setFollowerLatest([])
+    followers.forEach(async (element: any) => {
+      let followerPost = await getLatestPostFromUser(element);
+
+      setFollowerLatest((prevState: any[]) => {
+        return [...prevState, followerPost];
+      });
+
+    });
+
+  }, [])
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -30,21 +49,7 @@ const Home = () => {
     setRefreshing(false);
   }
 
-  const loadVideoCards = () => {
-    return posts.map((item: any) => (
-      <View key={item.$id}>
-        <VideoCard videoItem={item} page='home' />
-      </View>
-    ))
-  }
-
-  const loadLatesVideos = () => {
-    return (
-      <Trending posts={latestPosts} />
-    )
-  }
-
-  return loading ? (<LoadingScreen message={'TIP: double tap the picture'} />) : (
+  return loading ? (<LoadingScreen message={'TIP: tap the picture'} />) : (
     <SafeAreaView className='bg-exPrime  '>
 
       <FlatList
@@ -80,25 +85,23 @@ const Home = () => {
 
             {/* Lates videos */}
             <View className='w-full flex-1 mt-4 mb-0 px-2 '>
-              <Text className='text-lg font-pregular text-gray-400 mb-1'>
+              <Text className='text-lg font-pregular text-gray-400 mb-0'>
                 Following
               </Text>
-              {loadLatesVideos()}
-            </View>
+              <Following posts={followerLatest} />
 
-            <View className='w-full  '>
-              <Text className='text-lg font-pregular text-gray-400 px-4 mb-4'>
-                Latest Posts
-              </Text>
-              {loadVideoCards()}
             </View>
+            <Text className='text-lg font-pregular text-gray-400 px-4 mb-4 '>
+              Latest Posts
+            </Text>
           </View>
         )}
 
         // Video cards
         renderItem={({ item }: any) => (
-          <View></View>
-        )}
+          <View className='w-full  '>
+            <VideoCard videoItem={item} page='home' />
+          </View>)}
 
         ListEmptyComponent={() => (
           <EmptyState

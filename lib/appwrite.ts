@@ -199,7 +199,7 @@ export const getUserPosts = async (userId: any) => {
 
 let cachedLatestPost: any = null;
 
-export const getLatestPostFromUser = async (userId: any, isThumbnail: boolean) => {
+export const getLatestPostFromUser = async (userId: string) => {
     if (cachedLatestPost && cachedLatestPost.userId === userId) return cachedLatestPost;
     try {
         const posts = await databases.listDocuments(
@@ -213,14 +213,13 @@ export const getLatestPostFromUser = async (userId: any, isThumbnail: boolean) =
         );
 
         const latestPost = {
-            url: isThumbnail ?
-                posts.documents[0]?.thumbnail || null :
-                posts.documents[0]?.image || null,
+            url: posts.documents[0]?.thumbnail ?? posts.documents[0]?.image,
             id: posts.documents[0]?.$id || null,
             userId: userId
         };
 
         cachedLatestPost = latestPost;
+
         return latestPost;
 
     } catch (error: any) {
