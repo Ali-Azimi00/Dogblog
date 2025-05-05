@@ -4,10 +4,10 @@ import { StyleSheet, View } from 'react-native';
 import {
     FlatList,
     Image,
-    ImageBackground,
     TouchableOpacity,
 } from "react-native";
-// import { icons } from "../constants";
+import { router } from 'expo-router'
+
 
 const zoomIn = {
     0: {
@@ -27,8 +27,7 @@ const zoomOut = {
     },
 };
 
-const FollowingItem = ({ activeItem, item }: any) => {
-
+const FollowingItem = ({ activeItem, item, userId }: any) => {
     return (
         <Animatable.View
             key={item.$id}
@@ -36,15 +35,26 @@ const FollowingItem = ({ activeItem, item }: any) => {
             animation={activeItem === item.$id ? zoomIn : zoomOut}
             duration={500}
         >
-
-            <View
-                className="w-full h-36" >
-                <Image className=" my-2 overflow-hidden  shadow-lg "
-                    resizeMode="cover"
-                    style={{ width: 100, height: 100, borderRadius: 100, shadowColor: 'white' }}
-                    source={{ uri: item.url }}
-                />
-            </View>
+            <TouchableOpacity
+                onPress={() => {
+                    router.push({
+                        pathname: '/following/userProfile',
+                        params: {
+                            postUserId: userId,
+                            followDataString: JSON.stringify(true),
+                        }
+                    });
+                }}
+            >
+                <View
+                    className="w-full h-36" >
+                    <Image className=" my-2 overflow-hidden  shadow-lg "
+                        resizeMode="cover"
+                        style={{ width: 100, height: 100, borderRadius: 100, shadowColor: 'white' }}
+                        source={{ uri: item.url }}
+                    />
+                </View>
+            </TouchableOpacity>
 
         </Animatable.View>
     );
@@ -65,7 +75,7 @@ const Following = ({ posts }: any) => {
             horizontal
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-                <FollowingItem activeItem={activeItem} item={item} />
+                <FollowingItem activeItem={activeItem} item={item} userId={item.userId} />
             )}
             onViewableItemsChanged={viewableItemsChanged}
             viewabilityConfig={{
