@@ -170,7 +170,7 @@ const Create = () => {
   }
 
 
-  return uploading ? (<LoadingScreen />) : (
+  return uploading ? (<LoadingScreen animation={true} />) : (
     <SafeAreaView className='bg-exPrime h-full'>
       <ScrollView className="px-4 my-6 ">
 

@@ -11,6 +11,8 @@ import VideoCard from '@/components/VideoCard'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import LoadingScreen from "@/components/LoadingScreen";
 import Following from '@/components/Following'
+import '../../components/component.css'
+import LoadingAnimation from '@/components/LoadingAnimation'
 
 const Home = () => {
   const { user } = useGlobalContext();
@@ -40,7 +42,7 @@ const Home = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 3000);
   }, [])
 
   const onRefresh = async () => {
@@ -94,6 +96,8 @@ const Home = () => {
             <Text className='text-lg font-pregular text-gray-400 px-4 mb-4 '>
               Latest Posts
             </Text>
+
+
           </View>
         )}
 

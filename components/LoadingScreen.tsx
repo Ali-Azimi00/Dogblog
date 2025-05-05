@@ -1,13 +1,21 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet, Text, Image } from 'react-native';
+import LoadingAnimation from './LoadingAnimation';
 
-
-const LoadingScreen = ({ message }: any) => {
+const LoadingScreen = ({ message, animation }: any) => {
     return (
         <View style={styles.container}>
             <ActivityIndicator size="large" color="#FF9C01" />
-            <Text style={styles.loadingText}>{message ? message : 'Fetching bones...'}</Text>
-        </View>
+            {/* <LoadingAnimation /> */}
+
+            {
+                animation ? (
+                    <LoadingAnimation />
+                ) : (
+                    <Text className='font-pthin' style={styles.loadingText}>{message ? message : 'Fetching bones...'}</Text>
+                )
+            }
+        </View >
     );
 };
 
@@ -23,14 +31,15 @@ const styles = StyleSheet.create({
     loadingText: {
         marginTop: 20,
         fontSize: 16,
-        color: '#333',
+        // color: '#333',
+        color: 'white'
     },
     animation: {
         width: 200,
         height: 200,
     },
-    gif: {
-        width: 200,
-        height: 200,
-    },
+    // gif: {
+    //     width: 200,
+    //     height: 200,
+    // },
 });

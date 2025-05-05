@@ -1,52 +1,26 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.colors {
-    background-color: #1b634b;
-    color: #1b634b;
-
-}
-
-.fieldRing {
-    border-width: 2;
-    border-color: #FF9C01;
-}
-/* 
-.fieldRing:focus {
-    border-width: 2;
-    border-color: #FF9C01;
-} */
-
-
 @keyframes textSwitch {
     0%, 20% {
         transform: translateX(0);
         opacity: 1;
-        color:white;
         content: "Text 1";
     }
     25%, 45% {
         transform: translateX(100%);
         opacity: 0;
-        color:white;
         content: "Text 2";
     }
     50%, 70% {
         transform: translateX(0);
-        color:white;
         opacity: 1;
         content: "Text 2";
     }
     75%, 95% {
         transform: translateX(100%);
-        color:white;
         opacity: 0;
         content: "Text 3";
     }
     100% {
         transform: translateX(0);
-        color:white;
         opacity: 1;
         content: "Text 3";
     }
@@ -56,17 +30,21 @@
     display: inline-block;
     position: relative;
     overflow: hidden;
-    color:white;
     width: 200px; /* Adjust based on your text width */
-    height: 1em; /* Adjust based on your text size */    
+    height: 1em; /* Adjust based on your text size */
+}
+
+.twhite{
+    border: solid;
+    border-width: 2px;
+    border-color: red;
 }
 
 .text-switcher::after {
     display: inline-block;
     position: absolute;
     white-space: nowrap;
-    color:white;
-    animation: textSwitch 2s infinite;
+    animation: textSwitch 20s infinite;
     content: "Text 1";
     transform: translateX(-100%);
     opacity: 0;
