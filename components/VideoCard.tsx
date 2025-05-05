@@ -134,6 +134,7 @@ const VideoCard = ({ videoItem:
                             classStyles='w-8 h-8 pr-2 '
                             currentCard={currentCard}
                             cardId={$id}
+                            imageUrl={image}
                             modalOptions={modalOptions}
                             postUserId={creator.$id}
                             passFunction={setUserFollowingPoster}

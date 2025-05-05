@@ -48,7 +48,8 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "replicate": "^1.0.1",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "expo-media-library": "~17.0.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.26.4",

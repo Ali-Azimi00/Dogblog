@@ -4,6 +4,7 @@ import { icons } from '../constants'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { router } from 'expo-router'
 import { updateFollowing, isFollowing } from '@/lib/appwrite';
+import { downloadImage } from '@/lib/downloadImage'
 
 export default function ModalDropdown({
     modalIcon,
@@ -12,7 +13,8 @@ export default function ModalDropdown({
     cardId,
     modalOptions,
     passFunction,
-    postUserId
+    postUserId,
+    imageUrl,
 }: any) {
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -66,8 +68,12 @@ export default function ModalDropdown({
                 }
             });
         }
-        setSelectedOption('Select an option')
 
+        if (selectedOption == 'Download Image') {
+            downloadImage(imageUrl)
+        }
+
+        setSelectedOption('Select an option')
     }, [selectedOption])
 
     return (

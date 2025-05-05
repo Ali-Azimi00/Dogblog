@@ -61,8 +61,8 @@ Expo-av allows you to play audio/video
 npm install react-native-animatable expo-av
 ```
 
-### System Upload image/videos
-Choosing videos/images to upload from your mobile device
+### System Upload/Download of image/videos
+Explore your files and choose videos/images to upload from your mobile device
 
 [Document picker](https://docs.expo.dev/versions/latest/sdk/document-picker/)
 ```bash
@@ -72,6 +72,16 @@ npm install expo-document-picker
 [Image Picker](https://docs.expo.dev/versions/latest/sdk/imagepicker/)
 ```bash
 npm install expo-image-picker
+```
+
+[Expo-file-system](https://docs.expo.dev/versions/latest/sdk/filesystem/)
+```bash
+npx expo install expo-file-system
+```
+
+[Expo-media-library](https://docs.expo.dev/versions/latest/sdk/media-library/)
+```bash
+npx expo install expo-media-library
 ```
 
 

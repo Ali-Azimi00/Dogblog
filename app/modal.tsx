@@ -4,10 +4,7 @@ import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-nati
 import { router, useLocalSearchParams } from 'expo-router'
 
 export default function Modal() {
-
-
     const { title, message, nextScreen } = useLocalSearchParams();
-
 
     return (
         <Animated.View
@@ -83,3 +80,9 @@ export default function Modal() {
     );
 }
 
+export const ModalPush = (title: string, message: string) => {
+    router.push({
+        pathname: '/modal',
+        params: { title: title, message: message }
+    })
+}
