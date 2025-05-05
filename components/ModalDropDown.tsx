@@ -15,6 +15,7 @@ export default function ModalDropdown({
     passFunction,
     postUserId,
     imageUrl,
+    cartoon,
 }: any) {
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -71,6 +72,9 @@ export default function ModalDropdown({
 
         if (selectedOption == 'Download Image') {
             downloadImage(imageUrl)
+        }
+        if (selectedOption == 'Download AI image') {
+            downloadImage(cartoon)
         }
 
         setSelectedOption('Select an option')

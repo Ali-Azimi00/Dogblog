@@ -135,6 +135,7 @@ const VideoCard = ({ videoItem:
                             currentCard={currentCard}
                             cardId={$id}
                             imageUrl={image}
+                            cartoon={cartoon}
                             modalOptions={modalOptions}
                             postUserId={creator.$id}
                             passFunction={setUserFollowingPoster}
