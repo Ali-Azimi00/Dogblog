@@ -10,7 +10,7 @@ import { router, useLocalSearchParams } from 'expo-router'
 import { updateMediaInfo, deleteMedia } from '@/lib/appwrite'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import * as ImagePicker from 'expo-image-picker'
-
+import { ModalPush } from '@/app/modal'
 
 interface mediaForm {
     title: string,
@@ -64,10 +64,7 @@ const UpdateForm = () => {
 
         } catch (error: any) {
             // Alert.alert('Error', error.message)
-            router.push({
-                pathname: '/modal',
-                params: { title: 'Error', message: error.message }
-            })
+            ModalPush('Error', error.message);
         }
 
         setUploading(false);

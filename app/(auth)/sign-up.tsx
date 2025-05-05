@@ -6,7 +6,7 @@ import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { createUser } from '../../lib/appwrite'
 import { useGlobalContext } from '@/context/GlobalProvider'
-
+import { ModalPush } from '@/app/modal'
 
 const SignUp = () => {
     const { setUser, setIsLogged } = useGlobalContext();
@@ -29,18 +29,12 @@ const SignUp = () => {
     const submit = async () => {
         if (!form.username || !form.email || !form.password) {
 
-            // Alert.alert('Error', 'plese fill in all fields')
-            router.push({
-                pathname: '/modal',
-                params: { title: 'Error', message: 'Please fill in all fields' }
-            })
+            // Alert.alert('Error', 'plese fill in all fields')            
+            ModalPush('Error', 'Please fill in all fields')
         }
         else if (form.password != formCheck.password) {
             // Alert.alert('Error', "Passwords don't match")
-            router.push({
-                pathname: '/modal',
-                params: { title: 'Error', message: "Passwords don't match" }
-            })
+            ModalPush('Error', "Passwords don't match")
 
         } else {
             setIsSubmitting(true);
@@ -52,10 +46,7 @@ const SignUp = () => {
                 router.replace('/home');
             } catch (error: any) {
                 // Alert.alert('Error1', error.message)
-                router.push({
-                    pathname: '/modal',
-                    params: { title: 'Error', message: error.message }
-                })
+                ModalPush('Error', error.message)
             }
             finally {
                 setIsSubmitting(false);

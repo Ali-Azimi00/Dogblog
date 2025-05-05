@@ -1,7 +1,7 @@
 import { Client, Account, ID, Avatars, Databases, Query, Storage, AppwriteException } from 'react-native-appwrite';
 import { checkImageByUrl, cartoonize, getPredictionById } from './aiAPI';
 import * as FileSystem from 'expo-file-system';
-import { router } from 'expo-router'
+import { ModalPush } from '../app/modal'
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
@@ -398,10 +398,7 @@ export const createVideo = async (form: any, setUploading: any) => {
             })
             setUploading(false)
         } else {
-            router.push({
-                pathname: '/modal',
-                params: { title: "Try Again", message: "Thumbnail must be of a dog. \nTry a different Thumbnail" }
-            })
+            ModalPush("Try Again", "Thumbnail must be of a dog. \nTry a different Thumbnail");
             setUploading(false)
         }
 
@@ -458,13 +455,9 @@ export const createImage = async (form: any, setUploading: any, setPrediction: a
 
                     } else {
                         // Alert.alert("Something went Wrong", "Try Again")
-                        router.push({
-                            pathname: '/modal',
-                            params: { title: "Try Again", message: "Something went Wrong" }
-                        })
+                        ModalPush("Try Again", "Something went Wrong");
                         console.log('Maximum attempts reached. Cartoon generation failed.');
                         setUploading(false);
-
                     }
                 } catch (error) {
                     console.error('Error:', error);
@@ -478,10 +471,7 @@ export const createImage = async (form: any, setUploading: any, setPrediction: a
 
         } else {
             // Alert.alert("Not posted", "Image must be of a dog. \nTry a different Image");
-            router.push({
-                pathname: '/modal',
-                params: { title: "Not posted", message: "Image must be of a dog. \nTry a different Image" }
-            })
+            ModalPush("Not posted", "Image must be of a dog. \nTry a different Image");
             setUploading(false);
             return false
         }
@@ -563,10 +553,7 @@ export const updateMediaInfo = async (mediaId: any, form: mediaForm) => {
             )
         } else {
             // Alert.alert("Not posted", "Thumbnail must be of a dog. \nTry a different Thumbnail");
-            router.push({
-                pathname: '/modal',
-                params: { title: "Try Again", message: "Thumbnail must be of a dog. \nTry a different Thumbnail" }
-            })
+            ModalPush("Try Again", "Thumbnail must be of a dog. \nTry a different Thumbnail");
         }
 
         return imageIsDog;

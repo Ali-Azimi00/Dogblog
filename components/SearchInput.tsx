@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { View, TextInput, TouchableOpacity, Image, Alert } from "react-native";
 import { icons } from "../constants";
 import { usePathname, router } from "expo-router";
+import { ModalPush } from '@/app/modal'
 
 const SearchInput = ({ title, value, searchPlaceholder,
     handleChangeText, otherStyles, initialQuery,
@@ -45,10 +46,8 @@ const SearchInput = ({ title, value, searchPlaceholder,
                 <TouchableOpacity onPress={() => {
                     if (!query) {
                         // return Alert.alert('Missing query', "Please input something to search results across database")
-                        router.push({
-                            pathname: '/modal',
-                            params: { title: 'Missing query', message: "Please input something to search results across database" }
-                        })
+                        ModalPush('Missing query', "Please input something to search results across database");
+
                     } else {
                         if (pathname.startsWith('/search')) {
                             router.setParams({ query })

@@ -6,6 +6,7 @@ import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { getCurrentUser, signIn } from '../../lib/appwrite'
 import { useGlobalContext } from '@/context/GlobalProvider'
+import { ModalPush } from '@/app/modal'
 
 const SignIn = () => {
 
@@ -22,10 +23,7 @@ const SignIn = () => {
 
         if (!form.email || !form.password) {
             // Alert.alert('Error', 'Please fill in all fields')
-            router.push({
-                pathname: '/modal',
-                params: { title: 'Error', message: 'Please fill in all fields' }
-            })
+            ModalPush('Error', 'Please fill in all fields');
         }
 
         setIsSubmitting(true);
@@ -38,7 +36,6 @@ const SignIn = () => {
             setIsLogged(true);
 
             // Alert.alert('Success', 'You have successfully logged in');
-            // router.replace('/home');
             router.replace({
                 pathname: '/modal',
                 params: { title: 'Success', message: 'You have successfully logged in', nextScreen: '/home' }

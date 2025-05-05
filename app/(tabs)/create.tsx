@@ -13,6 +13,7 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import * as ImagePicker from 'expo-image-picker'
 import * as DocumentPicker from 'expo-document-picker'
 import LoadingScreen from '@/components/LoadingScreen'
+import { ModalPush } from '@/app/modal'
 
 interface createForm {
   title: string,
@@ -41,39 +42,25 @@ const Create = () => {
 
     if (form.prompt === "") {
       // return Alert.alert('Please fill the prompt field');
-      router.push({
-        pathname: '/modal',
-        params: { title: 'Error', message: "Please give the dog's name" }
-      })
+      ModalPush('Error', "Please give the dog's name");
       return;
     }
 
 
     if (form.title === "") {
-      router.push({
-        pathname: '/modal',
-        params: { title: 'Error', message: 'Please fill the title field' }
-      })
+      ModalPush('Error', 'Please fill the title field');
       return
       //  Alert.alert('Please fill the title field');
-
     }
 
     if (!form.thumbnail && !mTypeImg) {
-      router.push({
-        pathname: '/modal',
-        params: { title: 'Error', message: 'Please upload a thumbnail image' }
-      })
-
+      ModalPush('Error', 'Please upload a thumbnail image');
       return
       // Alert.alert('Please upload a thumbnail image')
     }
 
     if (!form.video && !mTypeImg) {
-      router.push({
-        pathname: '/modal',
-        params: { title: 'Error', message: 'Please upload a video' }
-      })
+      ModalPush('Error', 'Please upload a video');
       return
       // Alert.alert('Please upload a video');
     }
@@ -99,10 +86,7 @@ const Create = () => {
 
     } catch (error: any) {
       // Alert.alert('Error', error.message)
-      router.push({
-        pathname: '/modal',
-        params: { title: 'Error', message: error.message }
-      })
+      ModalPush('Error', error.message);
     }
   }
 

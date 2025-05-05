@@ -7,7 +7,7 @@ import CustomButton from '@/components/CustomButton'
 import { router } from 'expo-router'
 import { updateProfile } from '@/lib/appwrite'
 import { useGlobalContext } from '@/context/GlobalProvider'
-
+import { ModalPush } from '../modal'
 
 interface profileForm {
     username: string,
@@ -46,10 +46,8 @@ const UpdateProfile = () => {
 
         if (form.password != form.confirmPassword) {
             // Alert.alert('Error', "Passwords don't match")
-            router.push({
-                pathname: '/modal',
-                params: { title: 'Error', message: "Passwords don't match" }
-            })
+            ModalPush('Error', "Passwords don't match");
+
         }
         else {
             console.log('starting upload')
@@ -71,9 +69,6 @@ const UpdateProfile = () => {
 
             setUploading(false);
         }
-
-
-
 
     }
 
