@@ -51,79 +51,86 @@ const Home = () => {
     setRefreshing(false);
   }
 
-  return loading ? (<LoadingScreen message={'TIP: tap the picture'} />) : (
-    <SafeAreaView className='bg-exPrime  '>
+  return loading ?
+    (<LoadingScreen message={'TIP: tap the picture'} />)
+    : (
+      <SafeAreaView className='bg-exPrime  '>
 
-      <FlatList
-        data={posts}
-        keyExtractor={(item: any) => item.$id}
+        <FlatList
+          data={posts}
+          keyExtractor={(item: any) => item.$id}
 
-        ListHeaderComponent={() => (
-          <View className='flex mt-6 px-0'>
-            <View className="flex justify-between items-start flex-row mb-0">
-              <View className='px-4'>
-                <Text className="font-pmedium text-sm text-gray-400 mt-4">
-                  Welcome Back
-                </Text>
-                <Text className="text-2xl font-psemibold text-white">
-                  {user?.username}
-                </Text>
+          ListHeaderComponent={() => (
+            <View className='flex mt-6 px-0'>
+              <View className="flex justify-between 
+            items-start flex-row mb-0">
+                <View className='px-4'>
+                  <Text className="font-pmedium text-sm 
+                text-gray-400 mt-4">
+                    Welcome Back
+                  </Text>
+                  <Text className="text-2xl font-psemibold
+                text-white">
+                    {user?.username}
+                  </Text>
+                </View>
+
+                {/* Search bar */}
+                <View className='mt-0 '>
+                  <Image
+                    source={images.hdog}
+                    className='w-20 h-20'
+                    resizeMode='contain'
+                  />
+                </View>
               </View>
 
-              {/* Search bar */}
-              <View className='mt-0 '>
-                <Image
-                  source={images.hdog}
-                  className='w-20 h-20'
-                  resizeMode='contain'
-                />
+              {/* Search */}
+              <View className="px-2">
+                <SearchInput searchPlaceholder="Search" />
               </View>
-            </View>
 
-            {/* Search */}
-            <View className="px-2">
-              <SearchInput searchPlaceholder="Search" />
-            </View>
+              {/* Lates videos */}
+              <View className='w-full flex-1 mt-4 mb-0 px-2 '>
+                <Text className='text-lg font-pregular 
+              text-gray-400 mb-0'>
+                  Following
+                </Text>
+                <Following posts={followerLatest} />
 
-            {/* Lates videos */}
-            <View className='w-full flex-1 mt-4 mb-0 px-2 '>
-              <Text className='text-lg font-pregular text-gray-400 mb-0'>
-                Following
+              </View>
+              <Text className='text-lg font-pregular 
+            text-gray-400 px-4 mb-4 '>
+                Latest Posts
               </Text>
-              <Following posts={followerLatest} />
+
 
             </View>
-            <Text className='text-lg font-pregular text-gray-400 px-4 mb-4 '>
-              Latest Posts
-            </Text>
+          )}
 
+          // Video cards
+          renderItem={({ item }: any) => (
+            <View className='w-full  '>
+              <VideoCard videoItem={item} page='home' />
+            </View>)}
 
-          </View>
-        )}
+          ListEmptyComponent={() => (
+            <EmptyState
+              title='No videos found'
+              subtitle='Be the first one to upload a video'
+            />
+          )}
 
-        // Video cards
-        renderItem={({ item }: any) => (
-          <View className='w-full  '>
-            <VideoCard videoItem={item} page='home' />
-          </View>)}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        />
 
-        ListEmptyComponent={() => (
-          <EmptyState
-            title='No videos found'
-            subtitle='Be the first one to upload a video'
-          />
-        )}
-
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
-      />
-
-    </SafeAreaView>
-  )
+      </SafeAreaView>
+    )
 }
 
 export default Home

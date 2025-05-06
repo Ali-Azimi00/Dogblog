@@ -25,26 +25,13 @@ const LoadingAnimation = () => {
     }, []);
 
     return (
-        <View
-            style={{
-                // flex: 1,
-                // justifyContent: 'center',
-                // alignItems: 'center',
-                // height: 20,
-                // borderWidth: 2,
-                // borderColor: 'red',
-            }}
-            className='mt-6 '
-        >
+        <View className='mt-6 '>
             {statements.map((statement, index) => (
                 index === stateIndex && (
                     <Animated.View
                         key={index}
                         entering={SlideInLeft.duration(1000)}
                         exiting={SlideOutRight.duration(1000)}
-                    // style={{
-                    //     position: 'absolute',
-                    // }}
                     >
                         <Text className="text-white font-pthin">{statement}</Text>
                     </Animated.View>

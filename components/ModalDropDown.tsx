@@ -39,7 +39,8 @@ export default function ModalDropdown({
                 pathname: '/update/updatePost',
                 params: {
                     formDataString: JSON.stringify(currentCard),
-                    cardId: cardId
+                    cardId: cardId,
+                    cartoon: cartoon
                 }
             });
         }

@@ -24,8 +24,9 @@ const UpdateForm = () => {
 
     const [isImage, setIsImage] = useState(false)
 
-    const { formDataString, cardId } = useLocalSearchParams();
+    const { formDataString, cardId, cartoon } = useLocalSearchParams();
     const formData: any = JSON.parse(formDataString.toString());
+
 
     useEffect(() => {
         if (formData.image) {
@@ -42,6 +43,7 @@ const UpdateForm = () => {
         prompt: formData.prompt,
     })
 
+    const [updateAI, setUpdateAI] = useState(false)
     const [picked, setPicked] = useState(false);
     const { user } = useGlobalContext();
 
@@ -58,7 +60,11 @@ const UpdateForm = () => {
                 // router.replace('/home')
                 router.push({
                     pathname: '/modal',
-                    params: { title: 'Success', message: 'Post Updated', nextScreen: '/home' }
+                    params: {
+                        title: 'Success',
+                        message: 'Post Updated',
+                        nextScreen: '/home'
+                    }
                 })
             }
 
@@ -110,16 +116,60 @@ const UpdateForm = () => {
         <SafeAreaView className='bg-exPrime h-full'>
             <ScrollView className="px-4 my-6 ">
 
-                <View className="flex-row items-center justify-between mt-4">
+                <View className="flex-row items-center 
+                justify-between mt-4">
                     <View className="flex-row">
-                        <Text className='text-2xl  text-white font-psemibold '>
+                        <Text className='text-2xl  text-white 
+                        font-psemibold '>
                             Update Info
                         </Text>
                     </View>
+
+                    {/* 
+                    <View className='justify-end items-end'>
+                        <TouchableOpacity
+                            onPress={() => { setUpdateAI(!updateAI); console.log(updateAI) }}
+                            className={`w-12 h-6 rounded-full bg-gray-600 
+                p-1 justify-end`
+                            }
+                        >
+                            <View
+                                className={`w-4 h-4  bg-exSec rounded-2xl 
+                  ${updateAI ? '' : 'ml-auto'}`}
+                            />
+                        </TouchableOpacity>
+                    </View> */}
+
+
                 </View>
 
+                {
+                    isImage ? (
+                        <View className='flex flex-row gap-4'>
+                            <View className='flex-1'>
+                                <Image
+                                    source={{ uri: form.image }}
+                                    resizeMode='cover'
+                                    className='w-full min-h-[62px]  rounded-2xl mt-4 opacity-[.5]'
+                                />
+                            </View>
 
-                <Text className="text-base mt-4 mb-1 text-gray-100 font-pmedium">
+                            <View className='flex-1'>
+                                <Image
+                                    source={{ uri: cartoon }}
+                                    resizeMode='cover'
+                                    className='w-full min-h-[62px]  rounded-2xl mt-4 opacity-[.5]'
+                                />
+                            </View>
+                        </View>
+                    )
+                        : (<></>)
+                }
+
+
+
+                <Text className="text-base mt-4 mb-1 
+                text-gray-100 font-pmedium">
                     Title
                 </Text>
                 <UploadFormField
@@ -138,13 +188,15 @@ const UpdateForm = () => {
                 {
                     !isImage ? (
                         <View className="mt-4 space-y-2">
-                            <Text className="text-base mb-1 text-gray-100 font-pmedium">
+                            <Text className="text-base mb-1 
+                            text-gray-100 font-pmedium">
                                 Thumbnail Image
                             </Text>
 
                             <TouchableOpacity onPress={() => openPicker('thumbnail')}>
 
-                                <View className="flex justify-center items-center flex-row"
+                                <View className="flex justify-center 
+                                items-center flex-row"
                                     style={styles.spacing}>
                                     {
                                         picked ? (
@@ -160,15 +212,14 @@ const UpdateForm = () => {
                                                     source={{ uri: form.thumbnail }}
                                                     resizeMode='cover'
                                                     className='w-full h-64 rounded-2xl'
-
                                                 />
                                             )
                                     }
 
                                     <View className='absolute  '>
-
                                         <View className="">
-                                            <View className="relative justify-center items-center">
+                                            <View className="relative justify-center 
+                                            items-center">
 
                                                 <Image
                                                     source={icons.upload}
@@ -178,7 +229,8 @@ const UpdateForm = () => {
                                                 />
                                             </View>
 
-                                            <Text className="text-lg text-white font-pmedium">
+                                            <Text className="text-lg text-white 
+                                            font-pmedium">
                                                 Choose a new file
                                             </Text>
                                         </View>
@@ -186,13 +238,36 @@ const UpdateForm = () => {
                                     </View>
                                 </View>
 
-
                             </TouchableOpacity>
                         </View>
                     ) :
 
                         (
-                            <></>
+
+                            <View className="flex justify-center 
+                                items-center flex-row"
+                                style={styles.spacing}>
+
+                                {/* <Image
+                                    source={{ uri: cartoon }}
+                                    resizeMode='cover'
+                                    className='w-full h-64 rounded-2xl mt-4 opacity-[.5]'
+                                /> */}
+
+
+                                <View className='absolute  '>
+                                    <View className="">
+                                        <View className="relative justify-center 
+                                            items-center">
+                                        </View>
+                                        <Text className="text-lg text-center text-white 
+                                            font-pmedium">
+                                            {/* {updateAI ? "Keep this Image" : "Generate new \n image"} */}
+                                        </Text>
+                                    </View>
+                                </View>
+
+                            </View>
                         )
                 }
 

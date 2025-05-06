@@ -2,22 +2,6 @@ import Replicate from "replicate";
 import { getLatestPostFromUser } from "./appwrite";
 
 
-// {
-//     input: {
-//         stream: false,
-//         seed: 2862431,
-//         image: "https://cloud.appwrite.io/v1/storage/buckets/67af758100225e7d0b39/files/6802dcaa0018bd843d72/preview?project=67af647f003752394997"
-//     }
-// }
-
-// imageUrlToBase64("https://images.stockcake.com/public/3/2/1/321f2639-f47c-41e4-9ef1-2364f3c21713_medium/soulful-canine-portrait-stockcake.jpg")
-//     .then(base64 => {
-//         console.log(base64); // Data URL like: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQE...
-//     })
-//     .catch(error => {
-//         console.error('Error converting image:', error);
-//     });
-
 async function imageUrlToBase64(url: any) {
     const response = await fetch(url);
     const blob = await response.blob();
@@ -67,7 +51,6 @@ export const checkImageByUrl = async (url: any) => {
 export const getPredictionById = async (predictionId: string) => {
     try {
         const response = await fetch(`https://api.replicate.com/v1/predictions/${predictionId}`, {
-            // const response = await fetch(`https://api.replicate.com/v1/predictions/626rsxvr5hrmc0cpar9aw3fdng`, {
             method: 'GET',
             headers: {
                 'Authorization': `Token ${process.env.EXPO_PUBLIC_REPLICATE_API_TOKEN}`,
