@@ -13,20 +13,11 @@ const Search = () => {
 
   const { data: posts, refetch } = useAppwrite(() => searchPosts(query))
 
-
   //reloading/refreshing
   useEffect(() => {
     refetch();
   }, [query])
 
-
-  const loadVideoCards = () => {
-    return posts.map((item: any) => (
-      <View key={item.$id}>
-        <VideoCard video={item} />
-      </View>
-    ))
-  }
 
   return (
     <SafeAreaView className='bg-exPrime h-full '>
@@ -39,7 +30,7 @@ const Search = () => {
           <View className='my-6 px-4'>
             <View>
               <Text className="font-pmedium text-sm text-gray-400 mb-1">
-                Search Results
+                Search Results for
               </Text>
               <Text className="text-2xl font-psemibold text-white">
                 {query}
@@ -63,15 +54,19 @@ const Search = () => {
         // Video cards
         renderItem={({ item }: any) => (
           <View>
-            {loadVideoCards()}
+            {/* <VideoCard video={item} /> */}
+            <VideoCard videoItem={item} />
+
+            {/* {loadVideoCards()} */}
           </View>
         )}
 
 
         ListEmptyComponent={() => (
           <EmptyState
-            title='No videos found'
+            title='No Posts found'
             subtitle='No results for this search query'
+            hideButton={true}
           />
         )}
       />

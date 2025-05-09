@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import SearchInput from '@/components/SearchInput'
-import Trending from '@/components/Trending'
 import EmptyState from '@/components/EmptyState'
 import { getAllPosts, getLatestPostFromUser } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
@@ -12,7 +11,6 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import LoadingScreen from "@/components/LoadingScreen";
 import Following from '@/components/Following'
 import '../../components/component.css'
-import LoadingAnimation from '@/components/LoadingAnimation'
 
 const Home = () => {
   const { user } = useGlobalContext();
@@ -87,7 +85,7 @@ const Home = () => {
 
               {/* Search */}
               <View className="px-2">
-                <SearchInput searchPlaceholder="Search" />
+                <SearchInput searchPlaceholder="Dog's name" />
               </View>
 
               {/* Lates videos */}

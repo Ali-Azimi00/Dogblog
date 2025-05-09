@@ -171,9 +171,11 @@ export const searchPosts = async (query: any) => {
         const posts = await databases.listDocuments(
             databaseId,
             videoCollectionId,
-            [Query.search('title', query)]
+            [
+                Query.search('prompt', query),
+                Query.orderDesc('$createdAt')
+            ]
         )
-
         return posts.documents;
 
     } catch (error: any) {
