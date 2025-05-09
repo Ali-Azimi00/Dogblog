@@ -48,6 +48,14 @@ const UpdateForm = () => {
     const { user } = useGlobalContext();
 
     const submit = async () => {
+        if (form.prompt === "") {
+            ModalPush('Error', "Please give the dog's name");
+            return;
+        }
+        if (form.title === "") {
+            ModalPush('Error', 'Please fill the title field');
+            return
+        }
 
         setUploading(true);
 
@@ -124,21 +132,6 @@ const UpdateForm = () => {
                             Update Info
                         </Text>
                     </View>
-
-                    {/* 
-                    <View className='justify-end items-end'>
-                        <TouchableOpacity
-                            onPress={() => { setUpdateAI(!updateAI); console.log(updateAI) }}
-                            className={`w-12 h-6 rounded-full bg-gray-600 
-                p-1 justify-end`
-                            }
-                        >
-                            <View
-                                className={`w-4 h-4  bg-exSec rounded-2xl 
-                  ${updateAI ? '' : 'ml-auto'}`}
-                            />
-                        </TouchableOpacity>
-                    </View> */}
 
 
                 </View>
