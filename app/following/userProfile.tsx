@@ -9,14 +9,20 @@ import InfoBox from '@/components/InfoBox'
 import { router, useLocalSearchParams } from 'expo-router'
 import CustomButton from '@/components/CustomButton'
 import { isFollowing, updateFollowing } from '@/lib/appwrite'
+import GlobalProvider, { useGlobalContext } from '@/context/GlobalProvider'
 
 
 const UserProfile = () => {
+
+    const { user } = useGlobalContext();
     const { postUserId, followDataString }: any = useLocalSearchParams();
     const { data: posts } = useAppwrite(() => getUserPosts(postUserId))
     const followData: any = JSON.parse(followDataString.toString());
 
     const [userFollowingPoster, setUserFollowingPoster] = useState(followData)
+
+
+    const postUserNotCurrentUser: boolean = postUserId != user.$id
 
     useEffect(() => {
         const checkFollowing = async () => {
@@ -27,6 +33,7 @@ const UserProfile = () => {
     }, [])
 
     const renderFollowBtn = () => {
+
         if (userFollowingPoster) {
             return (
                 <CustomButton
@@ -95,7 +102,13 @@ const UserProfile = () => {
                                 </View>
 
                                 <TouchableOpacity className=' '>
-                                    {renderFollowBtn()}
+                                    {
+                                        postUserNotCurrentUser ? (
+                                            renderFollowBtn()
+                                        ) : (
+                                            <></>
+                                        )
+                                    }
                                 </TouchableOpacity>
 
                             </View>
