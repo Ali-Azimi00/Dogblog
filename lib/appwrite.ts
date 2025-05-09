@@ -187,7 +187,10 @@ export const getUserPosts = async (userId: any) => {
         const posts = await databases.listDocuments(
             databaseId,
             videoCollectionId,
-            [Query.equal("creator", userId)]
+            [
+                Query.equal("creator", userId),
+                Query.orderDesc('$createdAt')
+            ]
         )
 
         return posts.documents;
@@ -236,7 +239,10 @@ export const getBookmarkedPosts = async () => {
             const posts = await databases.listDocuments(
                 databaseId,
                 videoCollectionId,
-                [Query.contains('$id', currentPosts)]
+                [
+                    Query.contains('$id', currentPosts),
+                    Query.orderDesc('$createdAt')
+                ]
             );
 
             return posts.documents;
@@ -422,7 +428,7 @@ export const createImage = async (form: any, setUploading: any, setPrediction: a
 
             let attempts = 0;
             const maxAttempts = 7;
-            const interval = 20000; // 20 seconds
+            const interval = 20000;
 
             const checkPrediction = async () => {
                 try {
