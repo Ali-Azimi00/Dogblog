@@ -81,7 +81,7 @@ const VideoCard = ({ videoItem:
     //     })
     // }
 
-    const modalOptions = page == 'profile' ? ['Update'] : ['See Profile', 'Download Image', 'Download AI image']
+    const modalOptions = page == 'profile' ? 'Update' : 'See Profile'
 
     return (
         <View className="flex flex-col items-center px-4 mb-12">
@@ -136,7 +136,7 @@ const VideoCard = ({ videoItem:
                             cardId={$id}
                             imageUrl={image}
                             cartoon={cartoon}
-                            modalOptions={modalOptions}
+                            modalOptions={[modalOptions, 'Download Image', 'Download AI image']}
                             postUserId={creator.$id}
                             passFunction={setUserFollowingPoster}
                         />
