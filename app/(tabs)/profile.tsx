@@ -1,5 +1,5 @@
 import { View, FlatList, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import EmptyState from '@/components/EmptyState'
 import useAppwrite from '@/lib/useAppwrite'
@@ -9,14 +9,16 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import { icons } from '../../constants'
 import InfoBox from '@/components/InfoBox'
 import ModalDropdown from '../../components/ModalDropDown'
-import { router } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 
 
 
 const Profile = () => {
-  const { user, setUser, setIsLogged } = useGlobalContext();
-  const { data: posts } = useAppwrite(() => getUserPosts(user.$id))
+  const { update } = useLocalSearchParams();
 
+  const { user, setUser, setIsLogged, refreshUser } = useGlobalContext();
+  const { data: posts } = useAppwrite(() => getUserPosts(user.$id))
+  const [userUpdated, setUserUpdated] = useState(false);
 
   const logout = async () => {
     await signOut();
@@ -24,6 +26,24 @@ const Profile = () => {
     setIsLogged(false);
     router.replace("/sign-in");
   };
+
+  const onRefresh = async () => {
+    await refreshUser();
+  }
+
+  useEffect(() => {
+    if (update) {
+      setUserUpdated(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (userUpdated) {
+      onRefresh();
+      setUserUpdated(false)
+    }
+  }, [userUpdated])
+
 
 
   return (

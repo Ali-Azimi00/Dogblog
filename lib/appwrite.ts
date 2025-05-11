@@ -114,6 +114,27 @@ export const getCurrentUser = async () => {
     }
 };
 
+export const getRefreshedUser = async () => {
+    try {
+        const currentAccount = await account.get();
+        if (!currentAccount) throw Error;
+
+        const currentUser = await databases.listDocuments(
+            databaseId,
+            usersCollectionId,
+            [Query.equal('accountId', currentAccount.$id)]
+        );
+
+        if (!currentUser) throw Error;
+
+        cachedCurrentUser = currentUser.documents[0];
+        return cachedCurrentUser;
+
+    } catch (error: any) {
+        throw new Error(error);
+    }
+};
+
 export const getAllPosts = async () => {
     try {
         const posts = await databases.listDocuments(

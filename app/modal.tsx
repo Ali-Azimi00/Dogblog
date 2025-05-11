@@ -4,7 +4,7 @@ import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-nati
 import { router, useLocalSearchParams } from 'expo-router'
 
 export default function Modal() {
-    const { title, message, nextScreen } = useLocalSearchParams();
+    const { title, message, nextScreen, nextScreenParams }: any = useLocalSearchParams();
 
     return (
         <Animated.View
@@ -62,7 +62,12 @@ export default function Modal() {
                 </View>
 
                 <TouchableOpacity onPress={() => {
-                    nextScreen ? router.replace(nextScreen) : router.dismiss(1)
+                    nextScreen ? router.replace({
+                        pathname: nextScreen,
+                        params: {
+                            update: nextScreenParams
+                        }
+                    }) : router.dismiss(1)
                 }}
                     style={{
                         alignItems: 'flex-end',

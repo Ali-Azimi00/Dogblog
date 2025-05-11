@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getCurrentUser } from "../lib/appwrite";
+import { getCurrentUser, getRefreshedUser } from "../lib/appwrite";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -10,6 +10,24 @@ const GlobalProvider = ({ children }) => {
     const [isLogged, setIsLogged] = useState(false);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const refreshUser = () => {
+        setLoading(true);
+        getRefreshedUser()
+            .then((res) => {
+                if (res) {
+                    setUser(res);
+                } else {
+                    setUser(null);
+                }
+            })
+            .catch((error) => {
+                console.error("Error refreshing user:", error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
     useEffect(() => {
         getCurrentUser()
@@ -41,6 +59,7 @@ const GlobalProvider = ({ children }) => {
                 user,
                 setUser,
                 loading,
+                refreshUser,
             }
             }
         >

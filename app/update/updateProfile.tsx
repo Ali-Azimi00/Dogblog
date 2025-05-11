@@ -57,7 +57,12 @@ const UpdateProfile = () => {
                 // Alert.alert('Success', 'Profile Updated')
                 router.push({
                     pathname: '/modal',
-                    params: { title: 'Success', message: "Profile Updated", nextScreen: '/profile' }
+                    params: {
+                        title: 'Success',
+                        message: "Profile Updated",
+                        nextScreen: '/profile',
+                        nextScreenParams: [1]
+                    }
                 })
                 // router.replace({
                 //     pathname: '/profile',

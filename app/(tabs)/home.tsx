@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import SearchInput from '@/components/SearchInput'
 import EmptyState from '@/components/EmptyState'
-import { getAllPosts, getLatestPostFromUser } from '@/lib/appwrite'
+import { getAllPosts, getCurrentUser, getLatestPostFromUser } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
 import VideoCard from '@/components/VideoCard'
 import { useGlobalContext } from '@/context/GlobalProvider'
@@ -13,7 +13,7 @@ import Following from '@/components/Following'
 import '../../components/component.css'
 
 const Home = () => {
-  const { user } = useGlobalContext();
+  const { user, refreshUser } = useGlobalContext();
 
   const [followers] = useState(user.following)
   const [followerLatest, setFollowerLatest] = useState<any[]>([]);
@@ -21,7 +21,7 @@ const Home = () => {
 
   const [refreshing, setRefreshing] = useState(false);
   const { data: posts, refetch } = useAppwrite(getAllPosts);
-  // const { data: latestPosts } = useAppwrite(getLatestPosts);
+
 
   useEffect(() => {
     setFollowerLatest([])
@@ -36,6 +36,8 @@ const Home = () => {
 
   }, [])
 
+
+
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -46,6 +48,7 @@ const Home = () => {
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
+    // await refreshUser();
     setRefreshing(false);
   }
 
