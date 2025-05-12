@@ -1,28 +1,20 @@
 import { StatusBar } from "expo-status-bar";
 import { Redirect, router } from 'expo-router'
-
 import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import '../global.css';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../constants'
 import CustomButton from '../components/CustomButton';
 import { useGlobalContext } from '../context/GlobalProvider';
-import { useEffect, useState } from "react";
 
 
 export default function App() {
 
-  const { isLoading, isLogged }: any = useGlobalContext();
-
-
+  const { user, isLoading, isLogged }: any = useGlobalContext();
 
   if (!isLoading && isLogged) {
     return <Redirect href="/home" />
   }
-
-
-
-
 
   return (
     <SafeAreaView className="bg-exPrime h-full" style={styles.container}  >
@@ -34,10 +26,6 @@ export default function App() {
             className="w-80 h-80"
             resizeMode="contain"
           />
-          {/* <Image source={images.cards}
-            className="max-w-[380px] w-full h-[200px]"
-            resizeMode="contain"
-          /> */}
 
           <View className="relative mt-0">
             <Text className="text-3xl text-white font-bold text-center">
@@ -55,17 +43,18 @@ export default function App() {
             Where creativity meets innovation: emBARK on a journey
           </Text>
 
-
-          <CustomButton
-            title="Continue with Email"
-            handlePress={() => router.push('/sign-in')}
-            containerStyles="w-full mt-7 "
-          ></CustomButton>
-          <CustomButton
-            title={isLogged ? "Logged in" : "Guest"}
-            handlePress={() => { router.push('/home'); }}
-            containerStyles="w-full mt-7 "
-          ></CustomButton>
+          {
+            user ?
+              (<CustomButton
+                title="Wuff"
+                handlePress={() => { router.push('/home'); }}
+                containerStyles="w-full mt-7 " />)
+              :
+              (<CustomButton
+                title="Sign-In"
+                handlePress={() => router.push('/sign-in')}
+                containerStyles="w-full mt-7 " />)
+          }
 
         </View>
       </ScrollView>
@@ -80,15 +69,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'primary',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // border:{
-  //   borderColor:'green',
-  //   borderWidth: 2,
-
-  // }
 
 })
 
