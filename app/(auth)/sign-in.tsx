@@ -22,7 +22,6 @@ const SignIn = () => {
 
 
         if (!form.email || !form.password) {
-            // Alert.alert('Error', 'Please fill in all fields')
             ModalPush('Error', 'Please fill in all fields');
         }
 
@@ -35,15 +34,16 @@ const SignIn = () => {
             setUser(result);
             setIsLogged(true);
 
-            // Alert.alert('Success', 'You have successfully logged in');
             router.replace({
                 pathname: '/modal',
                 params: { title: 'Success', message: 'You have successfully logged in', nextScreen: '/home' }
             })
 
-        } catch (error) {
+        } catch (error: any) {
+            const errorMessage = error.message.replace(/^AppwriteException:\s*/, '');
+            ModalPush('Error', errorMessage);
             setIsSubmitting(false);
-
+            throw new Error(error);
         }
     }
 
