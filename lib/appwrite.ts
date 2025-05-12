@@ -2,6 +2,7 @@ import { Client, Account, ID, Avatars, Databases, Query, Storage, AppwriteExcept
 import { checkImageByUrl, cartoonize, getPredictionById } from './aiAPI';
 import * as FileSystem from 'expo-file-system';
 import { ModalPush } from '../app/modal'
+import { router } from 'expo-router'
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
@@ -602,7 +603,7 @@ interface profileForm {
 
 export const updateProfile = async (profileInfo: profileForm) => {
     const currentUser = await getCurrentUser();
-    console.log('currentUser')
+
     try {
         const updatedFields: any = {};
 
@@ -615,12 +616,29 @@ export const updateProfile = async (profileInfo: profileForm) => {
         }
 
         if (profileInfo.password) {
-            console.log('newProfileInfo', profileInfo.password)
-            console.log('oldProfileInfo', profileInfo.oldPassword)
+
             try {
-                const result = await account.updatePassword(profileInfo.password);
-                console.log('RESULTS', result)
+                const result = await account.updatePassword(
+                    profileInfo.password,
+                    profileInfo.oldPassword
+                );
+
+                if (result) {
+                    console.log("password updated")
+                }
+
+                router.push({
+                    pathname: '/modal',
+                    params: {
+                        title: 'Success',
+                        message: "Profile Updated",
+                        nextScreen: '/profile',
+                        nextScreenParams: [1]
+                    }
+                })
+
             } catch (error: any) {
+                console.log('errorlogged updateprofile catch')
                 console.log(error.code, error.message)
                 throw AppwriteException;
             }

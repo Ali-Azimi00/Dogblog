@@ -21,13 +21,8 @@ const UpdateProfile = () => {
     const [showPersonalInfo, setShowPersonalInfo] = useState(false)
     const [showPasswordInfo, setShowPasswordInfo] = useState(false)
 
-    // const { formDataString, userId } = useLocalSearchParams();
-    // const formData: any = JSON.parse(formDataString.toString());
-    const { user } = useGlobalContext();
-
     const [uploading, setUploading] = useState(false);
     const [form, setForm] = useState<profileForm>({
-        ///Change to prper fields
         username: '',
         email: '',
         oldPassword: '',
@@ -35,17 +30,10 @@ const UpdateProfile = () => {
         confirmPassword: '',
     })
 
-    //DON'T REMEMBER THE PURPOSE OF FORMCHECK
-    // const [formCheck, setFormCheck] = useState({
-    //     username: '',
-    //     email: '',
-    //     password: '',
-    // })
 
     const submit = async () => {
 
         if (form.password != form.confirmPassword) {
-            // Alert.alert('Error', "Passwords don't match")
             ModalPush('Error', "Passwords don't match");
 
         }
@@ -53,8 +41,7 @@ const UpdateProfile = () => {
             console.log('starting upload')
             setUploading(true);
             try {
-                const updatedForm = await updateProfile(form)
-                // Alert.alert('Success', 'Profile Updated')
+                await updateProfile(form)
                 router.push({
                     pathname: '/modal',
                     params: {
@@ -64,10 +51,7 @@ const UpdateProfile = () => {
                         nextScreenParams: [1]
                     }
                 })
-                // router.replace({
-                //     pathname: '/profile',
-                //     params: { refreshGlobalContext: "true" }
-                // });
+
             } catch (error: any) {
                 throw new Error(error);
             }
