@@ -15,13 +15,11 @@ import '../../components/component.css'
 const Home = () => {
   const { user, refreshUser } = useGlobalContext();
 
-  const [followers] = useState(user.following)
+  const [followers, setFollowers] = useState(user.following)
   const [followerLatest, setFollowerLatest] = useState<any[]>([]);
-
 
   const [refreshing, setRefreshing] = useState(false);
   const { data: posts, refetch } = useAppwrite(getAllPosts);
-
 
   useEffect(() => {
     setFollowerLatest([])
@@ -31,11 +29,9 @@ const Home = () => {
       setFollowerLatest((prevState: any[]) => {
         return [...prevState, followerPost];
       });
-
     });
 
-  }, [])
-
+  }, [user])
 
 
   const [loading, setLoading] = useState(true);
@@ -45,12 +41,15 @@ const Home = () => {
     }, 3000);
   }, [])
 
+
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
-    // await refreshUser();
+    await refreshUser();
+    setFollowers(user.following)
     setRefreshing(false);
   }
+
 
   return loading ?
     (<LoadingScreen message={'TIP: tap the picture'} />)
