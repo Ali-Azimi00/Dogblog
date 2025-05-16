@@ -20,6 +20,40 @@ interface profileForm {
 const UpdateProfile = () => {
     const [showPersonalInfo, setShowPersonalInfo] = useState(false)
     const [showPasswordInfo, setShowPasswordInfo] = useState(false)
+    const [showDeleteAccount, setShowDeleteAccount] = useState(false)
+
+    const handleShowPersonalInfo = () => {
+        setShowPersonalInfo((prev) => {
+            const newState = !prev;
+            if (newState) {
+                setShowPasswordInfo(false);
+                setShowDeleteAccount(false);
+            }
+            return newState;
+        });
+    };
+
+    const handleShowPasswordInfo = () => {
+        setShowPasswordInfo((prev) => {
+            const newState = !prev;
+            if (newState) {
+                setShowPersonalInfo(false);
+                setShowDeleteAccount(false);
+            }
+            return newState;
+        });
+    };
+
+    const handleShowDeleteAccount = () => {
+        setShowDeleteAccount((prev) => {
+            const newState = !prev;
+            if (newState) {
+                setShowPersonalInfo(false);
+                setShowPasswordInfo(false);
+            }
+            return newState;
+        });
+    };
 
     const [uploading, setUploading] = useState(false);
     const [form, setForm] = useState<profileForm>({
@@ -30,6 +64,28 @@ const UpdateProfile = () => {
         confirmPassword: '',
     })
 
+    useEffect(() => {
+        if (showPersonalInfo) {
+            setForm((prev) => {
+                let pd = { ...prev }
+                pd.oldPassword = ""
+                pd.password = ""
+                pd.confirmPassword = ""
+                return pd;
+            })
+        }
+
+        if (showPasswordInfo) {
+            setForm((prev) => {
+                let pd = { ...prev }
+                pd.username = ""
+                pd.email = ""
+                return pd;
+            })
+        }
+
+    }, [showPersonalInfo, showPasswordInfo])
+
 
     const submit = async () => {
 
@@ -38,7 +94,6 @@ const UpdateProfile = () => {
 
         }
         else {
-            console.log('starting upload')
             setUploading(true);
             try {
                 await updateProfile(form)
@@ -69,17 +124,17 @@ const UpdateProfile = () => {
                 <View className="flex-row items-center justify-between mt-4 mb-4">
                     <View className="flex-row">
                         <Text className='text-2xl  text-white font-psemibold '>
-                            Update Info
+                            Account Settings
                         </Text>
                     </View>
                 </View>
 
                 <View>
                     <TouchableOpacity
-                        onPress={() => setShowPersonalInfo(!showPersonalInfo)}
+                        onPress={() => handleShowPersonalInfo()}
                         className="flex-row justify-between items-center py-3 border-b border-gray-300"
                     >
-                        <Text className="text-lg text-white font-semibold">Personal Info</Text>
+                        <Text className="text-md text-white font-psemibold">Update Personal Info</Text>
                         <Text className="text-lg text-white">{showPersonalInfo ? '-' : '+'}</Text>
                     </TouchableOpacity>
                     {showPersonalInfo && (
@@ -112,10 +167,10 @@ const UpdateProfile = () => {
 
                 <View>
                     <TouchableOpacity
-                        onPress={() => setShowPasswordInfo(!showPasswordInfo)}
+                        onPress={() => handleShowPasswordInfo()}
                         className="flex-row justify-between items-center py-3 border-b border-gray-300"
                     >
-                        <Text className="text-lg text-white font-semibold">Password Info</Text>
+                        <Text className="text-md text-white font-psemibold">Update Password</Text>
                         <Text className="text-lg text-white">{showPasswordInfo ? '-' : '+'}</Text>
                     </TouchableOpacity>
                     {showPasswordInfo && (
@@ -156,7 +211,20 @@ const UpdateProfile = () => {
                         </View>
                     )}
                 </View>
-
+                <View>
+                    <TouchableOpacity
+                        onPress={() => handleShowDeleteAccount()}
+                        className="flex-row justify-between items-center py-3 border-b border-gray-300"
+                    >
+                        <Text className="text-md text-white font-psemibold">Delete Account</Text>
+                        <Text className="text-lg text-white">{showDeleteAccount ? '-' : '+'}</Text>
+                    </TouchableOpacity>
+                    {showDeleteAccount && (
+                        <View className='py-2'>
+                            <Text className="text-sm text-white font-pregular">Delete Account</Text>
+                        </View>
+                    )}
+                </View>
                 <CustomButton
                     title="Update"
                     handlePress={submit}

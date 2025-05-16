@@ -706,5 +706,22 @@ export const updateFollowing = async (postUserId: string, following: boolean) =>
     }
 }
 
+export const deleteUser = async (userId: string) => {
+    const currentUser = await getCurrentUser();
+
+    try {
+        await account.deleteIdentity(userId);
+        const deletedUser = await databases.deleteDocument(
+            databaseId,
+            usersCollectionId,
+            currentUser.$id,
+        );
+        console.log('deleting user ' + currentUser.$id)
+        return deletedUser;
+    } catch (error: any) {
+        throw new Error(error);
+    }
+};
+
 
 
