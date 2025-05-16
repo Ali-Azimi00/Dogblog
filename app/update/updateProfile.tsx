@@ -14,7 +14,8 @@ interface profileForm {
     email: string,
     password: string,
     oldPassword: string,
-    confirmPassword: string
+    confirmPassword: string,
+    confirmDelete: boolean
 }
 
 const UpdateProfile = () => {
@@ -62,10 +63,11 @@ const UpdateProfile = () => {
         oldPassword: '',
         password: '',
         confirmPassword: '',
+        confirmDelete: false
     })
 
     useEffect(() => {
-        if (showPersonalInfo) {
+        if (!showPersonalInfo) {
             setForm((prev) => {
                 let pd = { ...prev }
                 pd.oldPassword = ""
@@ -75,7 +77,7 @@ const UpdateProfile = () => {
             })
         }
 
-        if (showPasswordInfo) {
+        if (!showPasswordInfo) {
             setForm((prev) => {
                 let pd = { ...prev }
                 pd.username = ""
@@ -84,7 +86,52 @@ const UpdateProfile = () => {
             })
         }
 
-    }, [showPersonalInfo, showPasswordInfo])
+        if (!showPasswordInfo) {
+            setForm((prev) => {
+                let pd = { ...prev }
+                pd.confirmDelete = false
+                return pd;
+            })
+        }
+
+    }, [showPersonalInfo, showPasswordInfo, showDeleteAccount])
+
+
+    const renderUpdateBtn = () => {
+        const disabled = !(
+            (showPersonalInfo && (form.username.trim() !== '' || form.email.trim() !== '')) ||
+            (showPasswordInfo && (form.oldPassword.trim() !== '' && form.password.trim() !== '' && form.confirmPassword.trim() !== ''))
+        );
+        return (
+            <CustomButton
+                title="Update"
+                handlePress={disabled ? undefined : submit}
+                containerStyles={`mt-7 ${disabled ? ' opacity-50' : ''}`}
+                isLoading={uploading}
+                disabled={disabled}
+            />
+        );
+    }
+
+    const renderDeleteBtn = () => {
+        const disabled = !(form.confirmDelete);
+        return (
+            <CustomButton
+                title="Delete"
+                handlePress={disabled ? undefined : submitDelete}
+                containerStyles={`mt-3 border-2 border-exSec bg-gray-900  ${disabled ? ' opacity-50' : ''}`}
+                isLoading={uploading}
+                disabled={disabled}
+                textStyles=" text-exSec  font-pmedium "
+
+            />
+        );
+    }
+
+    const submitDelete = () => {
+        console.log('delete, but not really')
+    }
+
 
 
     const submit = async () => {
@@ -131,9 +178,15 @@ const UpdateProfile = () => {
                 <View>
                     <TouchableOpacity
                         onPress={() => handleShowPersonalInfo()}
-                        className="flex-row justify-between items-center py-3 border-b border-gray-300"
+                        className="flex-row justify-between items-center 
+                        py-2 pt-3 border-b border-gray-300"
                     >
-                        <Text className="text-md text-white font-psemibold">Update Personal Info</Text>
+                        <Text className={showPersonalInfo ?
+                            'ext-md text-exSec font-psemibold' :
+                            'ext-md text-white font-psemibold'}
+                        >
+                            Update Personal Info
+                        </Text>
                         <Text className="text-lg text-white">{showPersonalInfo ? '-' : '+'}</Text>
                     </TouchableOpacity>
                     {showPersonalInfo && (
@@ -167,9 +220,15 @@ const UpdateProfile = () => {
                 <View>
                     <TouchableOpacity
                         onPress={() => handleShowPasswordInfo()}
-                        className="flex-row justify-between items-center py-3 border-b border-gray-300"
+                        className="flex-row justify-between items-center 
+                        py-2 pt-3 border-b border-gray-300"
                     >
-                        <Text className="text-md text-white font-psemibold">Update Password</Text>
+                        <Text className={showPasswordInfo ?
+                            'ext-md text-exSec font-psemibold' :
+                            'ext-md text-white font-psemibold'}
+                        >
+                            Update Password
+                        </Text>
                         <Text className="text-lg text-white">{showPasswordInfo ? '-' : '+'}</Text>
                     </TouchableOpacity>
                     {showPasswordInfo && (
@@ -211,35 +270,75 @@ const UpdateProfile = () => {
                     )}
                 </View>
                 <View>
+
                     <TouchableOpacity
                         onPress={() => handleShowDeleteAccount()}
-                        className="flex-row justify-between items-center py-3 border-b border-gray-300"
+                        className="flex-row justify-between items-center 
+                        py-2 pt-3 border-b border-gray-300"
                     >
-                        <Text className="text-md text-white font-psemibold">Delete Account</Text>
+
+                        <Text className={showDeleteAccount ?
+                            'ext-md text-exSec font-psemibold' :
+                            'ext-md text-white font-psemibold'}
+                        >
+                            Delete Account
+                        </Text>
                         <Text className="text-lg text-white">{showDeleteAccount ? '-' : '+'}</Text>
                     </TouchableOpacity>
                     {showDeleteAccount && (
                         <View className='py-2'>
-                            <Text className="text-sm text-white font-pregular">Delete Account</Text>
+
+                            <View className={`w-full h-16 px-0 bg-gray-800 rounded-2xl border-0 border-black-200 
+                            flex flex-row items-center `}>
+
+                                {/* <Text className="text-sm text-red-500 font-pregular">Delete Account</Text> */}
+                                <TouchableOpacity
+                                    onPress={() => setForm({ ...form, confirmDelete: !form.confirmDelete })}
+                                    style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        marginLeft: 10,
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            height: 20,
+                                            width: 20,
+                                            borderRadius: 4,
+                                            borderWidth: 2,
+                                            borderColor: 'white',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            marginRight: 16,
+                                            backgroundColor: form.confirmDelete ? '#FF9C01' : 'transparent',
+                                        }}
+                                    >
+                                        {form.confirmDelete && (
+                                            <View
+                                                style={{
+                                                    width: 10,
+                                                    height: 10,
+                                                    backgroundColor: '#FF9C01',
+                                                    borderRadius: 2,
+                                                }}
+                                            />
+                                        )}
+                                    </View>
+                                    <Text style={{ color: 'white', fontSize: 12 }}
+                                        className='font-pregular text-sm'>
+                                        I understand this action is permanent
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+
                         </View>
                     )}
                 </View>
 
-                {(() => {
-                    const disabled = !(
-                        (showPersonalInfo && (form.username.trim() !== '' || form.email.trim() !== '')) ||
-                        (showPasswordInfo && (form.oldPassword.trim() !== '' && form.password.trim() !== '' && form.confirmPassword.trim() !== ''))
-                    );
-                    return (
-                        <CustomButton
-                            title="Update"
-                            handlePress={submit}
-                            containerStyles={`mt-7${disabled ? ' opacity-50' : ''}`}
-                            isLoading={uploading}
-                            disabled={disabled}
-                        />
-                    );
-                })()}
+
+
+                {showDeleteAccount ? renderDeleteBtn() : renderUpdateBtn()}
+
 
             </ScrollView>
         </SafeAreaView>
