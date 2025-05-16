@@ -6,7 +6,6 @@ import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton'
 import { router } from 'expo-router'
 import { updateProfile } from '@/lib/appwrite'
-import { useGlobalContext } from '@/context/GlobalProvider'
 import { ModalPush } from '../modal'
 
 interface profileForm {
@@ -109,6 +108,7 @@ const UpdateProfile = () => {
                 containerStyles={`mt-7 ${disabled ? ' opacity-50' : ''}`}
                 isLoading={uploading}
                 disabled={disabled}
+                textStyles="font-pmedium "
             />
         );
     }
@@ -131,7 +131,6 @@ const UpdateProfile = () => {
     const submitDelete = () => {
         console.log('delete, but not really')
     }
-
 
 
     const submit = async () => {
@@ -286,9 +285,9 @@ const UpdateProfile = () => {
                         <Text className="text-lg text-white">{showDeleteAccount ? '-' : '+'}</Text>
                     </TouchableOpacity>
                     {showDeleteAccount && (
-                        <View className='py-2'>
+                        <View className='pt-2'>
 
-                            <View className={`w-full h-16 px-0 bg-gray-800 rounded-2xl border-0 border-black-200 
+                            <View className={`w-full h-16 px-3  rounded-2xl border-0 border-black-200 
                             flex flex-row items-center `}>
 
                                 {/* <Text className="text-sm text-red-500 font-pregular">Delete Account</Text> */}
@@ -335,10 +334,7 @@ const UpdateProfile = () => {
                     )}
                 </View>
 
-
-
                 {showDeleteAccount ? renderDeleteBtn() : renderUpdateBtn()}
-
 
             </ScrollView>
         </SafeAreaView>

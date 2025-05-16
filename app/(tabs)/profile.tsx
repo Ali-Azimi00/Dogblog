@@ -56,7 +56,7 @@ const Profile = () => {
         ListHeaderComponent={() => (
 
           <View className="w-full justify-center items-center 
-          mt-6 mb-12 px-2">
+          mt-6 mb-6 px-2">
 
             <View className="flex flex-row justify w-full"
               style={styles.spacing}>
@@ -122,9 +122,10 @@ const Profile = () => {
 
         ListEmptyComponent={() => (
           <EmptyState
-            title='No videos found'
-            subtitle='No results for this search query'
+            title='No posts found'
+            subtitle='You have no posts uploaded'
           />
+
         )}
       />
     </SafeAreaView>
