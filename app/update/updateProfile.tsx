@@ -91,7 +91,6 @@ const UpdateProfile = () => {
 
         if (form.password != form.confirmPassword) {
             ModalPush('Error', "Passwords don't match");
-
         }
         else {
             setUploading(true);
@@ -225,12 +224,22 @@ const UpdateProfile = () => {
                         </View>
                     )}
                 </View>
-                <CustomButton
-                    title="Update"
-                    handlePress={submit}
-                    containerStyles="mt-7"
-                    isLoading={uploading}
-                />
+
+                {(() => {
+                    const disabled = !(
+                        (showPersonalInfo && (form.username.trim() !== '' || form.email.trim() !== '')) ||
+                        (showPasswordInfo && (form.oldPassword.trim() !== '' && form.password.trim() !== '' && form.confirmPassword.trim() !== ''))
+                    );
+                    return (
+                        <CustomButton
+                            title="Update"
+                            handlePress={submit}
+                            containerStyles={`mt-7${disabled ? ' opacity-50' : ''}`}
+                            isLoading={uploading}
+                            disabled={disabled}
+                        />
+                    );
+                })()}
 
             </ScrollView>
         </SafeAreaView>
