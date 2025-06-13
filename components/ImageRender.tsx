@@ -1,5 +1,7 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useRef, useState } from 'react'
+import { getFileID } from '@/lib/appwrite'
+
 import {
     GestureHandlerRootView,
     HandlerStateChangeEvent,
@@ -12,12 +14,14 @@ const ImageRender = ({ image, cartoon }: any) => {
 
     const [showCartoon, setShowCartoon] = useState(false);
 
+
     const doubleTapRef = useRef();
     const handleSingleTap = (
         e: HandlerStateChangeEvent<TapGestureHandlerEventPayload>,
     ) => {
         if (e.nativeEvent.state === State.ACTIVE) {
             console.log('single tapped');
+            getFileID(cartoon)
             setShowCartoon(!showCartoon);
         }
     };

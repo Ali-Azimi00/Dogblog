@@ -660,12 +660,17 @@ export const updateProfile = async (profileInfo: profileForm) => {
 
 
 export const deleteMedia = async (mediaId: any) => {
+    //getURL
+
+
     try {
         const post = await databases.deleteDocument(
             databaseId,
             videoCollectionId,
             mediaId
         )
+
+        // deleteFile()
     } catch (error: any) {
         throw new Error(error);
     }
@@ -746,4 +751,34 @@ export const deleteAllPosts = async () => {
     }
 }
 
+const deleteFile = async (input: string) => {
+
+    const fileId: string = getFileID(input);
+
+    try {
+        await storage.deleteFile(storageId, fileId);
+        console.log('File deleted successfully');
+    } catch (error) {
+        console.error('Error deleting file:', error);
+    }
+};
+
+export const getFileID = (url: string) => {
+    // const input = "https://example.com/view/page";
+    const target = "/preview";
+    const index = url.indexOf(target);
+    let fileId: string = "";
+    try {
+        url.substring(index - 20, index)
+        // console.log(`'/view' found at index: ${index}`);
+        console.log('FILEID', url.substring(index - 20, index));
+    }
+    catch (error: any) {
+        console.log("'/view' not found");
+        console.log(error)
+        throw Error(error)
+    }
+
+    return fileId;
+}
 
