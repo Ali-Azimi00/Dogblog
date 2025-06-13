@@ -451,8 +451,8 @@ export const createImage = async (form: any, setUploading: any, setPrediction: a
             let predId = await cartoonize(imageUrl)
 
             let attempts = 0;
-            const maxAttempts = 7;
-            const interval = 20000;
+            const maxAttempts = 9;
+            const interval = 30000;
 
             const checkPrediction = async () => {
                 try {
@@ -723,5 +723,27 @@ export const deleteUser = async (userId: string) => {
     }
 };
 
+
+export const deleteAllPosts = async () => {
+    const currentUser = await getCurrentUser();
+
+    try {
+        //gather content
+        const userPosts = await getUserPosts(currentUser.$id)
+
+        //delete content
+        userPosts.forEach((post) => {
+            deleteMedia(post.$id)
+        })
+
+
+        ModalPush('All posts Deleted', '')
+        router.replace('/profile')
+
+    } catch (error: any) {
+        console.log("Error: " + error)
+        throw new Error(error);
+    }
+}
 
 

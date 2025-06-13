@@ -180,7 +180,7 @@ const Create = () => {
               Upload
             </Text>
             <Text className="text-2xl  text-white
-             font-psemibold text-gray-100 font-pmedium">
+             font-psemibold ">
               {mTypeImg ? " Image " : " Video"}
             </Text>
           </View>

@@ -21,7 +21,7 @@ const EmptyState = ({ title, subtitle, hideButton }: any) => {
             {hideButton ?
                 <View />
                 : <CustomButton
-                    title='Create Video'
+                    title='Create Post'
                     handlePress={() => { router.push('/create') }}
                     containerStyles='w-full my-5 '
                 />}

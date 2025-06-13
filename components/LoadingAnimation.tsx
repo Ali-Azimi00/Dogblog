@@ -8,10 +8,13 @@ const LoadingAnimation = () => {
         'Connecting with AI agent',
         'Sending data',
         'Waiting for AI to respond',
-        "I guess AI isn't so great after all",
         'Still waiting on the AI...',
+
+        'This app is free, you get what you pay for',
         'Almost there',
-        'Humans are better',
+        'Maybe pay for the PRO version?',
+        'AI finally responded',
+        'Reconnecting with AI agent',
     ];
 
     const [stateIndex, setStateIndex] = useState(0);
@@ -19,7 +22,7 @@ const LoadingAnimation = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setStateIndex((prevIndex) => (prevIndex + 1) % statements.length);
-        }, 20000);
+        }, 25000);
 
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, []);
@@ -32,8 +35,9 @@ const LoadingAnimation = () => {
                         key={index}
                         entering={SlideInLeft.duration(1000)}
                         exiting={SlideOutRight.duration(1000)}
+                        className={'px-2 text-center text-wrap'}
                     >
-                        <Text className="text-white font-pthin">{statement}</Text>
+                        <Text className="text-white font-pthin text-center px-4">{statement}</Text>
                     </Animated.View>
                 )
             ))}

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton'
 import { router } from 'expo-router'
-import { updateProfile } from '@/lib/appwrite'
+import { deleteAllPosts, updateProfile } from '@/lib/appwrite'
 import { ModalPush } from '../modal'
 
 interface profileForm {
@@ -44,7 +44,7 @@ const UpdateProfile = () => {
         });
     };
 
-    const handleShowDeleteAccount = () => {
+    const handleShowDeleteAllPosts = () => {
         setShowDeleteAccount((prev) => {
             const newState = !prev;
             if (newState) {
@@ -129,7 +129,8 @@ const UpdateProfile = () => {
     }
 
     const submitDelete = () => {
-        console.log('delete, but not really')
+        console.log('submit delete')
+        deleteAllPosts();
     }
 
 
@@ -271,7 +272,7 @@ const UpdateProfile = () => {
                 <View>
 
                     <TouchableOpacity
-                        onPress={() => handleShowDeleteAccount()}
+                        onPress={() => handleShowDeleteAllPosts()}
                         className="flex-row justify-between items-center 
                         py-2 pt-3 border-b border-gray-300"
                     >
@@ -280,7 +281,7 @@ const UpdateProfile = () => {
                             'ext-md text-exSec font-psemibold' :
                             'ext-md text-white font-psemibold'}
                         >
-                            Delete Account
+                            Delete All Posts
                         </Text>
                         <Text className="text-lg text-white">{showDeleteAccount ? '-' : '+'}</Text>
                     </TouchableOpacity>
