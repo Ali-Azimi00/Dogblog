@@ -659,18 +659,32 @@ export const updateProfile = async (profileInfo: profileForm) => {
 };
 
 
-export const deleteMedia = async (mediaId: any) => {
-    //getURL
+interface Post {
+    title: string,
+    thumbnail: any,
+    video: string,
+    image: string,
+    prompt: string,
+    cartoon: string,
+}
 
+export const deleteMedia = async (mediaId: any) => {
+
+    let post: any = await getPostById(mediaId)
 
     try {
-        const post = await databases.deleteDocument(
+        await databases.deleteDocument(
             databaseId,
             videoCollectionId,
             mediaId
         )
 
-        // deleteFile()
+        const fileImageId: string = await getFileID(post.image);
+        const fileCartoonId: string = await getFileID(post.cartoon);
+
+        await deleteFile(fileImageId)
+        await deleteFile(fileCartoonId)
+
     } catch (error: any) {
         throw new Error(error);
     }
@@ -751,30 +765,24 @@ export const deleteAllPosts = async () => {
     }
 }
 
-const deleteFile = async (input: string) => {
-
-    const fileId: string = getFileID(input);
+export const deleteFile = async (fileId: string) => {
 
     try {
         await storage.deleteFile(storageId, fileId);
-        console.log('File deleted successfully');
+        console.log('File deleted successfully', fileId);
     } catch (error) {
         console.error('Error deleting file:', error);
     }
 };
 
-export const getFileID = (url: string) => {
-    // const input = "https://example.com/view/page";
-    const target = "/preview";
+export const getFileID = async (url: string) => {
+    const target = "files/";
     const index = url.indexOf(target);
     let fileId: string = "";
     try {
-        url.substring(index - 20, index)
-        // console.log(`'/view' found at index: ${index}`);
-        console.log('FILEID', url.substring(index - 20, index));
+        fileId = url.substring(index + target.length, index + 26)
     }
     catch (error: any) {
-        console.log("'/view' not found");
         console.log(error)
         throw Error(error)
     }
