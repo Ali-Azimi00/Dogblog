@@ -256,15 +256,15 @@ export const getLatestPostFromUser = async (userId: string) => {
 
 export const getBookmarkedPosts = async () => {
     const currentUser = await getCurrentUser();
-    const currentPosts: string[] = currentUser.bookmarked;
+    const bookmarkedPosts: string[] = currentUser.bookmarked;
 
-    if (currentPosts.length > 0) {
+    if (bookmarkedPosts.length > 0) {
         try {
             const posts = await databases.listDocuments(
                 databaseId,
                 videoCollectionId,
                 [
-                    Query.contains('$id', currentPosts),
+                    Query.contains('$id', bookmarkedPosts),
                     Query.orderDesc('$createdAt')
                 ]
             );

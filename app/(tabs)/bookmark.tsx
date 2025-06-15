@@ -13,7 +13,9 @@ import { images } from '../../constants'
 
 
 const Bookmark = () => {
-  const { data: posts, refetch } = useAppwrite(() => getBookmarkedPosts())
+  const { data: posts, refetch } = useAppwrite(
+    () => getBookmarkedPosts()
+  )
 
 
   const [refreshing, setRefreshing] = useState(false);

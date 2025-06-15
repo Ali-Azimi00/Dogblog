@@ -28,7 +28,9 @@ const VideoCard = ({ videoItem:
         cartoon,
         creator
     },
-    page
+    page,
+    updateBookmarks,
+    setUpdateBookMarks,
 }: any) => {
 
     const currentCard: mediaForm = {
@@ -44,18 +46,30 @@ const VideoCard = ({ videoItem:
 
     const [userFollowingPoster, setUserFollowingPoster] = useState('')
     const [bookmarkSelect, setBookMarkSelect] = useState(false);
+
+    const checkBookmark = async () => {
+        const bookmarked = await isBookmarked($id);
+        setBookMarkSelect(bookmarked);
+    };
+    const checkFollowing = async () => {
+        const following = await isFollowing(creator.$id);
+        following ?
+            setUserFollowingPoster("Unfollow")
+            : setUserFollowingPoster("Follow")
+    };
+
     useEffect(() => {
-        const checkBookmark = async () => {
-            const bookmarked = await isBookmarked($id);
-            setBookMarkSelect(bookmarked);
-        };
+        if (updateBookmarks) {
+            checkBookmark();
+            setUpdateBookMarks(false)
+        }
+
         checkBookmark();
-        const checkFollowing = async () => {
-            const following = await isFollowing(creator.$id);
-            following ? setUserFollowingPoster("Unfollow") : setUserFollowingPoster("Follow")
-        };
         checkFollowing()
-    }, [])
+    }, [updateBookmarks])
+
+
+
 
     const player = useVideoPlayer(videoSource, player => {
         // player.loop = false;

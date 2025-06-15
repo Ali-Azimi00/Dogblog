@@ -17,6 +17,7 @@ const Home = () => {
 
   const [followers, setFollowers] = useState(user.following)
   const [followerLatest, setFollowerLatest] = useState<any[]>([]);
+  const [updateBookmarks, setUpdateBookMarks] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
   const { data: posts, refetch } = useAppwrite(getAllPosts);
@@ -46,6 +47,7 @@ const Home = () => {
     setRefreshing(true);
     await refetch();
     await refreshUser();
+    setUpdateBookMarks(true);
     setFollowers(user.following)
     setRefreshing(false);
   }
@@ -111,13 +113,20 @@ const Home = () => {
           // Video cards
           renderItem={({ item }: any) => (
             <View className='w-full  '>
-              <VideoCard videoItem={item} page='home' />
-            </View>)}
+              <VideoCard
+                videoItem={item}
+                page='home'
+                updateBookmarks={updateBookmarks}
+                setUpdateBookMarks={setUpdateBookMarks}
+              />
+            </View>
+
+          )}
 
           ListEmptyComponent={() => (
             <EmptyState
-              title='No videos found'
-              subtitle='Be the first one to upload a video'
+              title='No posts found'
+              subtitle='Be the first one to upload a post'
             />
           )}
 
