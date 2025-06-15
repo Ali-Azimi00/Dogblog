@@ -54,60 +54,72 @@ const Profile = () => {
         keyExtractor={(item: any) => item.$id}
 
         ListHeaderComponent={() => (
-
-          <View className="w-full justify-center items-center 
-          mt-6 mb-6 px-2">
-
-            <View className="flex flex-row justify w-full"
-              style={styles.spacing}>
-
-              <TouchableOpacity className=''
-                onPress={() => { router.push('/update/updateProfile') }}
-              >
-                <Image source={icons.gear}
-                  resizeMode='contain'
-                  className='w-10 h-10' />
-              </TouchableOpacity>
-
-              <TouchableOpacity className=''>
-                <ModalDropdown
-                  modalIcon={icons.logout}
-                  classStyles='w-8 h-10'
-                  modalOptions={['LogOut']}
-                  passFunction={logout}
-                />
-              </TouchableOpacity>
-
-            </View>
+          <View>
 
 
-            <View className="w-16 h-16 border border-exSec 
-            rounded-lg flex justify-center items-center"
-            >
-              <Image source={{ uri: user?.avatar }}
-                resizeMode='contain'
-                className="w-[90%] h-[90%]"
-              />
-            </View>
+            <View className=' '>
+              <View className=' '>
+                <View className="justify-center items-center mt-4 mx-4"
+                >
 
-            <InfoBox
-              title={user?.username}
-              containerStyles='mt-5'
-              titleStyles='text-lg'
-            />
+                  <View className="flex flex-row justify w-full"
+                    style={styles.spacing}>
 
-            <View className="mt-0 flex flex-row">
-              <InfoBox
-                title={posts.length || 0}
-                subtitle='Posts'
-                containerStyles='mr-8'
-                titleStyles='text-xl'
-              />
-              <InfoBox
-                title="1.2k"
-                subtitle="Followers"
-                titleStyles='text-xl'
-              />
+                    <TouchableOpacity className=''
+                      onPress={() => { router.push('/update/updateProfile') }}
+                    >
+                      <Image source={icons.gear}
+                        resizeMode='contain'
+                        className='w-10 h-10' />
+                    </TouchableOpacity>
+
+                    <View className='w-16 h-16 flex-col  border-2 border-exSec 
+                                     rounded-lg justify-center items-center my-2'>
+                      <Image source={{ uri: user?.avatar }}
+                        resizeMode='cover'
+                        className="w-[100%] h-[100%] " />
+                    </View>
+
+
+                    <TouchableOpacity className=''>
+                      <ModalDropdown
+                        modalIcon={icons.logout}
+                        classStyles='w-8 h-10'
+                        modalOptions={['LogOut']}
+                        passFunction={logout}
+                      />
+                    </TouchableOpacity>
+
+                  </View>
+
+
+                  <View className='flex-1 items-start justify-start mt-2 '>
+                    <InfoBox
+                      title={user?.username}
+                      // subtitle={`Posts: ` + posts.length || 0}
+                      subtitle={`Posts: 100 `}
+
+                      containerStyles='mt-2 place-content-evenly items-center '
+                      titleStyles='text-3xl font-psemibold  '
+                      subtitleStyles='text-xl font-pregular mt-1 '
+                    />
+                  </View>
+
+
+                </View>
+              </View>
+
+
+              <View className='justify-center items-center'>
+                <View className='w-[100%] border h-0 my-5  '
+                  style={{
+                    boxShadow: '0px -4px 10px 0px rgba(196, 196, 196, 0.38);',
+                    borderBottomColor: '#161622',
+                    borderBottomWidth: 1
+                  }}>
+                </View>
+              </View>
+
             </View>
 
           </View>
