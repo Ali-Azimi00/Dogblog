@@ -69,8 +69,8 @@ const Bookmark = () => {
 
         ListEmptyComponent={() => (
           <EmptyState
-            title='No videos found'
-            subtitle='No bookmarked videos'
+            title='No posts found'
+            subtitle='No bookmarked posts'
             hideButton={true}
           />
         )}
