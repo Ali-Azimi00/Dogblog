@@ -99,10 +99,10 @@ const Home = () => {
                   Following
                 </Text>
                 <Following posts={followerLatest} />
-
               </View>
+
               <Text className='text-lg font-pregular 
-            text-gray-400 px-4 mb-4 '>
+            text-gray-400 px-4 mb-2 '>
                 Latest Posts
               </Text>
 

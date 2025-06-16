@@ -4,7 +4,9 @@ import React from 'react'
 const InfoBox = ({ title, subtitle, titleStyles, containerStyles, subtitleStyles }: any) => {
     return (
         <View className={containerStyles}>
-            <Text className={`text-white text-center  ${titleStyles}`}>
+            <Text className={`text-white text-center ${titleStyles}`}
+                numberOfLines={1}
+            >
                 {title}
             </Text>
             <Text className={`text-gray-100 text-center ${subtitleStyles}`}>

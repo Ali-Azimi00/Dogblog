@@ -238,11 +238,11 @@ export const getLatestPostFromUser = async (userId: string) => {
                 Query.limit(1)
             ]
         );
-
         const latestPost = {
             url: posts.documents[0]?.thumbnail ?? posts.documents[0]?.image,
             id: posts.documents[0]?.$id || null,
-            userId: userId
+            userId: userId,
+            userName: posts.documents[0]?.creator.username || null,
         };
 
         cachedLatestPost = latestPost;

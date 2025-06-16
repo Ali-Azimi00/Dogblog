@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { act, useState } from "react";
 import * as Animatable from "react-native-animatable";
 import { StyleSheet, View } from 'react-native';
 import {
@@ -7,6 +7,8 @@ import {
     TouchableOpacity,
 } from "react-native";
 import { router } from 'expo-router'
+import { images } from '../constants'
+import InfoBox from "./InfoBox";
 
 
 const zoomIn = {
@@ -28,6 +30,13 @@ const zoomOut = {
 };
 
 const FollowingItem = ({ activeItem, item, userId }: any) => {
+
+    let imgSrc: any = images.hdog
+
+    if (activeItem != null) {
+        imgSrc = { uri: item.url }
+    }
+
     return (
         <Animatable.View
             key={item.$id}
@@ -47,12 +56,25 @@ const FollowingItem = ({ activeItem, item, userId }: any) => {
                 }}
             >
                 <View
-                    className="w-full h-36" >
-                    <Image className=" my-2 overflow-hidden  shadow-lg "
+                    className="w-full h-36 mb-4 " >
+                    <Image className=" my-2 overflow-hidden  shadow-lg bg-gray-900  "
                         resizeMode="cover"
                         style={{ width: 100, height: 100, borderRadius: 100, shadowColor: 'white' }}
-                        source={{ uri: item.url }}
+                        // source={{ uri: item.url }}
+                        source={imgSrc}
+
                     />
+
+                    <View
+                        style={{ width: 100, height: 15 }}
+                    >
+                        <InfoBox
+                            containerStyles=' overflow-hidden text-ellipsis  '
+                            title={item.userName}
+                            titleStyles='font-pthin '
+                        />
+                    </View>
+
                 </View>
             </TouchableOpacity>
 
