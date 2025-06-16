@@ -1,12 +1,13 @@
 import { View, Text, SafeAreaView, ScrollView, StyleSheet, Image } from 'react-native'
 import { Link, router } from 'expo-router'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { images } from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { getCurrentUser, signIn } from '../../lib/appwrite'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { ModalPush } from '@/app/modal'
+import LoadingScreen from "@/components/LoadingScreen";
 
 const SignIn = () => {
 
@@ -30,14 +31,10 @@ const SignIn = () => {
         try {
             await signIn(form.email, form.password);
             const result = await getCurrentUser();
+            handleLoading()
 
             setUser(result);
             setIsLogged(true);
-
-            router.replace({
-                pathname: '/modal',
-                params: { title: 'Success', message: 'You have successfully logged in', nextScreen: '/home' }
-            })
 
         } catch (error: any) {
             const errorMessage = error.message.replace(/^AppwriteException:\s*/, '');
@@ -46,10 +43,23 @@ const SignIn = () => {
             throw new Error(error);
         }
     }
+    const [loading, setLoading] = useState(false);
+    const handleLoading = () => {
+        setLoading(true);
 
+        setTimeout(() => {
+            setLoading(false);
+            router.replace({
+                pathname: '/modal',
+                params: { title: 'Success', message: 'You have successfully logged in', nextScreen: '/home' }
+            })
+        }, 3000);
 
-    return (
-        <SafeAreaView className="bg-exPrime h-full">
+    }
+
+    return loading ?
+        (<LoadingScreen message={'TIP: tap the picture'} />)
+        : (<SafeAreaView className="bg-exPrime h-full">
             <ScrollView>
 
                 <View className='w-full justify-center  
@@ -111,7 +121,7 @@ const SignIn = () => {
 
             </ScrollView>
         </SafeAreaView>
-    )
+        )
 }
 
 export default SignIn;

@@ -35,12 +35,12 @@ const Home = () => {
   }, [user])
 
 
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, [])
+  // const [loading, setLoading] = useState(true);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 3000);
+  // }, [])  
 
 
   const onRefresh = async () => {
@@ -53,93 +53,95 @@ const Home = () => {
   }
 
 
-  return loading ?
-    (<LoadingScreen message={'TIP: tap the picture'} />)
-    : (
-      <SafeAreaView className='bg-exPrime  '>
+  // return loading ?
+  //   (<LoadingScreen message={'TIP: tap the picture'} />)
+  //   : (
 
-        <FlatList
-          data={posts}
-          keyExtractor={(item: any) => item.$id}
+  return (
+    <SafeAreaView className='bg-exPrime  '>
 
-          ListHeaderComponent={() => (
-            <View className='flex mt-6 px-0'>
-              <View className="flex justify-between 
+      <FlatList
+        data={posts}
+        keyExtractor={(item: any) => item.$id}
+
+        ListHeaderComponent={() => (
+          <View className='flex mt-6 px-0'>
+            <View className="flex justify-between 
             items-start flex-row mb-0">
-                <View className='px-4'>
-                  <Text className="font-pmedium text-sm 
+              <View className='px-4'>
+                <Text className="font-pmedium text-sm 
                 text-gray-400 mt-4">
-                    Welcome Back
-                  </Text>
-                  <Text className="text-2xl font-psemibold
-                text-white">
-                    {user?.username}
-                  </Text>
-                </View>
-
-                {/* Search bar */}
-                <View className='mt-0 '>
-                  <Image
-                    source={images.hdog}
-                    className='w-20 h-20'
-                    resizeMode='contain'
-                  />
-                </View>
-              </View>
-
-              {/* Search */}
-              <View className="px-2">
-                <SearchInput searchPlaceholder="Dog's name" />
-              </View>
-
-              {/* Lates videos */}
-              <View className='w-full flex-1 mt-4 mb-0 px-2 '>
-                <Text className='text-lg font-pregular 
-              text-gray-400 mb-0'>
-                  Following
+                  Welcome Back
                 </Text>
-                <Following posts={followerLatest} />
+                <Text className="text-2xl font-psemibold
+                text-white">
+                  {user?.username}
+                </Text>
               </View>
 
+              {/* Search bar */}
+              <View className='mt-0 '>
+                <Image
+                  source={images.hdog}
+                  className='w-20 h-20'
+                  resizeMode='contain'
+                />
+              </View>
+            </View>
+
+            {/* Search */}
+            <View className="px-2">
+              <SearchInput searchPlaceholder="Dog's name" />
+            </View>
+
+            {/* Lates videos */}
+            <View className='w-full flex-1 mt-4 mb-0 px-2 '>
               <Text className='text-lg font-pregular 
-            text-gray-400 px-4 mb-2 '>
-                Latest Posts
+              text-gray-400 mb-0'>
+                Following
               </Text>
-
-
-            </View>
-          )}
-
-          // Video cards
-          renderItem={({ item }: any) => (
-            <View className='w-full  '>
-              <VideoCard
-                videoItem={item}
-                page='home'
-                updateBookmarks={updateBookmarks}
-                setUpdateBookMarks={setUpdateBookMarks}
-              />
+              <Following posts={followerLatest} />
             </View>
 
-          )}
+            <Text className='text-lg font-pregular 
+            text-gray-400 px-4 mb-2 '>
+              Latest Posts
+            </Text>
 
-          ListEmptyComponent={() => (
-            <EmptyState
-              title='No posts found'
-              subtitle='Be the first one to upload a post'
+
+          </View>
+        )}
+
+        // Video cards
+        renderItem={({ item }: any) => (
+          <View className='w-full  '>
+            <VideoCard
+              videoItem={item}
+              page='home'
+              updateBookmarks={updateBookmarks}
+              setUpdateBookMarks={setUpdateBookMarks}
             />
-          )}
+          </View>
 
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-            />
-          }
-        />
+        )}
 
-      </SafeAreaView>
-    )
+        ListEmptyComponent={() => (
+          <EmptyState
+            title='No posts found'
+            subtitle='Be the first one to upload a post'
+          />
+        )}
+
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      />
+
+    </SafeAreaView>
+  )
 }
 
 export default Home
