@@ -137,7 +137,7 @@ const Create = () => {
         mediaTypes: (selectType === 'image' || selectType === 'thumbnail')
           ? ['images']
           : ['videos'],
-        allowsEditing: false,
+        allowsEditing: true,
         aspect: [12, 9],
         quality: 1,
       })
