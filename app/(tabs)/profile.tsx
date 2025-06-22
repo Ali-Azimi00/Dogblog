@@ -96,8 +96,8 @@ const Profile = () => {
                   <View className='flex-1 items-start justify-start mt-2 '>
                     <InfoBox
                       title={user?.username}
-                      // subtitle={`Posts: ` + posts.length || 0}
-                      subtitle={`Posts: 100 `}
+                      subtitle={`Posts: ` + posts.length || 0}
+                      // subtitle={`Posts: 100 `}
 
                       containerStyles='mt-2 place-content-evenly items-center '
                       titleStyles='text-3xl font-psemibold  '

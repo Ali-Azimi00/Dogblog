@@ -3,6 +3,7 @@ import { checkImageByUrl, cartoonize, getPredictionById } from './aiAPI';
 import * as FileSystem from 'expo-file-system';
 import { ModalPush } from '../app/modal'
 import { router } from 'expo-router'
+import Following from '@/components/Following';
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
@@ -60,7 +61,8 @@ export async function createUser(email: string, password: string, username: stri
                 accountId: newAccount.$id,
                 email: email,
                 username: username,
-                avatar: avatarUrl
+                avatar: avatarUrl,
+                following: ['68534966002b1bef948f', '6858492f00113eb0b8fa'],
             }
         )
 
