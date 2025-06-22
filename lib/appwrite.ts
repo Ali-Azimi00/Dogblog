@@ -3,7 +3,6 @@ import { checkImageByUrl, cartoonize, getPredictionById } from './aiAPI';
 import * as FileSystem from 'expo-file-system';
 import { ModalPush } from '../app/modal'
 import { router } from 'expo-router'
-import Following from '@/components/Following';
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
@@ -62,7 +61,11 @@ export async function createUser(email: string, password: string, username: stri
                 email: email,
                 username: username,
                 avatar: avatarUrl,
-                following: ['68534966002b1bef948f', '6858492f00113eb0b8fa'],
+                following: [
+                    `${process.env.EXPO_PUBLIC_BASE_FOLLOWING1}`,
+                    `${process.env.EXPO_PUBLIC_BASE_FOLLOWING2}`,
+                    `${process.env.EXPO_PUBLIC_BASE_FOLLOWING3}`,
+                    `${newAccount.$id}`],
             }
         )
 
@@ -228,8 +231,28 @@ export const getUserPosts = async (userId: any) => {
 
 let cachedLatestPost: any = null;
 
+export const getUserById = async (userId: string) => {
+    if (userId === cachedCurrentUser.accountId) {
+        return cachedCurrentUser.username
+    }
+    try {
+        const user = await databases.getDocument(
+            databaseId,
+            usersCollectionId,
+            userId
+        );
+
+        return user.username
+    }
+    catch (error: any) {
+        console.log('error', error)
+        throw new Error(error);
+    }
+}
+
 export const getLatestPostFromUser = async (userId: string) => {
     if (cachedLatestPost && cachedLatestPost.userId === userId) return cachedLatestPost;
+
     try {
         const posts = await databases.listDocuments(
             databaseId,
@@ -240,11 +263,13 @@ export const getLatestPostFromUser = async (userId: string) => {
                 Query.limit(1)
             ]
         );
+
         const latestPost = {
             url: posts.documents[0]?.thumbnail ?? posts.documents[0]?.image,
             id: posts.documents[0]?.$id || null,
             userId: userId,
-            userName: posts.documents[0]?.creator.username || null,
+            userName: posts.documents[0]?.creator.username || await getUserById(userId),
+            createdAt: posts.documents[0]?.$createdAt
         };
 
         cachedLatestPost = latestPost;

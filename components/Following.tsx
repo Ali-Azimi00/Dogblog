@@ -29,11 +29,11 @@ const zoomOut = {
     },
 };
 
-const FollowingItem = ({ activeItem, item, userId }: any) => {
+const FollowingItem = ({ activeItem, item }: any) => {
 
     let imgSrc: any = images.hdog
 
-    if (activeItem != null) {
+    if (item.url != null) {
         imgSrc = { uri: item.url }
     }
 
@@ -49,7 +49,7 @@ const FollowingItem = ({ activeItem, item, userId }: any) => {
                     router.push({
                         pathname: '/following/userProfile',
                         params: {
-                            postUserId: userId,
+                            postUserId: item.userId,
                             followDataString: JSON.stringify(true),
                         }
                     });
@@ -57,7 +57,7 @@ const FollowingItem = ({ activeItem, item, userId }: any) => {
             >
                 <View
                     className="w-full h-36 mb-4 " >
-                    <Image className=" my-2 overflow-hidden  shadow-lg bg-gray-900  "
+                    <Image className=" my-2 overflow-hidden  shadow-lg bg-gray-900  opacity-20"
                         resizeMode="cover"
                         style={{ width: 100, height: 100, borderRadius: 100, shadowColor: 'white' }}
                         // source={{ uri: item.url }}
@@ -91,21 +91,38 @@ const Following = ({ posts }: any) => {
         }
     };
 
+    //keep for now
+    const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
     return (
         <FlatList
-            data={posts}
+            data={sortedPosts}
             horizontal
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.userId}
             renderItem={({ item }) => (
-                <FollowingItem activeItem={activeItem} item={item} userId={item.userId} />
+                <FollowingItem activeItem={activeItem} item={item} />
             )}
             onViewableItemsChanged={viewableItemsChanged}
             viewabilityConfig={{
                 itemVisiblePercentThreshold: 70,
             }}
-        //   contentOffset={{ x: 170 }}
         />
     );
+    //     return (
+    //         <FlatList
+    //             data={posts}
+    //             horizontal
+    //             keyExtractor={(item) => item.id}
+    //             renderItem={({ item }) => (
+    //                 <FollowingItem activeItem={activeItem} item={item} />
+    //             )}
+    //             onViewableItemsChanged={viewableItemsChanged}
+    //             viewabilityConfig={{
+    //                 itemVisiblePercentThreshold: 70,
+    //             }}
+    //         //   contentOffset={{ x: 170 }}
+    //         />
+    //     );
 };
 
 export default Following;

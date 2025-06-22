@@ -4,11 +4,10 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import SearchInput from '@/components/SearchInput'
 import EmptyState from '@/components/EmptyState'
-import { getAllPosts, getCurrentUser, getLatestPostFromUser } from '@/lib/appwrite'
+import { getAllPosts, getLatestPostFromUser } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
 import VideoCard from '@/components/VideoCard'
 import { useGlobalContext } from '@/context/GlobalProvider'
-import LoadingScreen from "@/components/LoadingScreen";
 import Following from '@/components/Following'
 import '../../components/component.css'
 
