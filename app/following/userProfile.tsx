@@ -8,7 +8,7 @@ import { getUserPosts, signOut } from '../../lib/appwrite'
 import InfoBox from '@/components/InfoBox'
 import { router, useLocalSearchParams } from 'expo-router'
 import CustomButton from '@/components/CustomButton'
-import { isFollowing, updateFollowing } from '@/lib/appwrite'
+import { isFollowing, updateFollowing, getUserById } from '@/lib/appwrite'
 import GlobalProvider, { useGlobalContext } from '@/context/GlobalProvider'
 
 
@@ -20,11 +20,18 @@ const UserProfile = () => {
     const followData: any = JSON.parse(followDataString.toString());
 
     const [userFollowingPoster, setUserFollowingPoster] = useState(followData)
+    const [postUser, setPostUser] = useState()
 
+    const postUserNotCurrentUser: boolean = postUserId != user.accountId
 
-    const postUserNotCurrentUser: boolean = postUserId != user.$id
-
+    const handleNoPosts = async () => {
+        if (posts.length < 1) {
+            setPostUser(await getUserById(postUserId))
+        }
+    }
     useEffect(() => {
+        handleNoPosts()
+
         const checkFollowing = async () => {
             const following: boolean = await isFollowing(postUserId);
             setUserFollowingPoster(following)
@@ -86,14 +93,14 @@ const UserProfile = () => {
                             >
                                 <View className='w-16 h-16 flex-col  
                                      rounded-lg justify-center items-center'>
-                                    <Image source={{ uri: posts[0]?.creator.avatar }}
+                                    <Image source={{ uri: posts[0]?.creator.avatar ?? postUser?.avatar }}
                                         resizeMode='contain'
                                         className="w-[100%] h-[100%] " />
                                 </View>
 
                                 <View className='flex-1 items-start justify-start '>
                                     <InfoBox
-                                        title={posts[0]?.creator.username}
+                                        title={posts[0]?.creator.username ?? postUser?.username}
                                         subtitle={`Posts: ` + posts.length || 0}
                                         containerStyles='mt-0 place-content-evenly items-start '
                                         titleStyles='text-3xl font-psemibold  '
