@@ -20,11 +20,14 @@ const EmptyState = ({ title, subtitle, hideButton }: any) => {
 
             {hideButton ?
                 <View />
-                : <CustomButton
-                    title='Create Post'
-                    handlePress={() => { router.push('/create') }}
-                    containerStyles='w-full my-5 '
-                />}
+                : <View className='w-full px-2'>
+                    <CustomButton
+                        title='Create Post'
+                        handlePress={() => { router.push('/create') }}
+                        containerStyles='w-full my-5 '
+                    />
+                </View>
+            }
 
 
         </View>
