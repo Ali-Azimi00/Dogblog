@@ -233,7 +233,7 @@ let cachedLatestPost: any = null;
 
 export const getUserById = async (userId: string) => {
     if (userId === cachedCurrentUser.accountId) {
-        return cachedCurrentUser.username
+        return cachedCurrentUser
     }
     try {
         const user = await databases.getDocument(
@@ -242,7 +242,7 @@ export const getUserById = async (userId: string) => {
             userId
         );
 
-        return user.username
+        return user
     }
     catch (error: any) {
         console.log('error', error)
@@ -264,11 +264,18 @@ export const getLatestPostFromUser = async (userId: string) => {
             ]
         );
 
+        let thisUser = posts.documents[0]?.creator
+
+        if (posts.documents.length < 1) {
+            console.log('POSTS EMPTY')
+            thisUser = await getUserById(userId)
+        }
+
         const latestPost = {
             url: posts.documents[0]?.thumbnail ?? posts.documents[0]?.image,
             id: posts.documents[0]?.$id || null,
             userId: userId,
-            userName: posts.documents[0]?.creator.username || await getUserById(userId),
+            userName: thisUser.username,
             createdAt: posts.documents[0]?.$createdAt
         };
 
