@@ -8,13 +8,15 @@ const LoadingAnimation = () => {
         'Connecting with AI agent',
         'Sending data',
         'Waiting for AI to respond',
-        'Still waiting on the AI...',
+        'Process may take 3-4 min',
 
-        'This app is free, you get what you pay for',
+        'You can navigate to other tabs while you wait',
+        'Shifting host',
+        'Verifying agent',
+        'Expanding AI scope',
         'Almost there',
-        'Maybe pay for the PRO version?',
         'AI finally responded',
-        'Reconnecting with AI agent',
+        'Connection lost',
     ];
 
     const [stateIndex, setStateIndex] = useState(0);

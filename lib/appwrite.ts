@@ -485,8 +485,8 @@ export const createImage = async (form: any, setUploading: any, setPrediction: a
             let predId = await cartoonize(imageUrl)
 
             let attempts = 0;
-            const maxAttempts = 9;
-            const interval = 30000;
+            const maxAttempts = 10;
+            const interval = 60000;
 
             const checkPrediction = async () => {
                 try {
