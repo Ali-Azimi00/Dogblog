@@ -18,14 +18,28 @@ interface profileForm {
 }
 
 const UpdateProfile = () => {
-    const [showPersonalInfo, setShowPersonalInfo] = useState(false)
+    const [showUserName, setShowUserName] = useState(false)
+    const [showEmail, setShowEmail] = useState(false)
     const [showPasswordInfo, setShowPasswordInfo] = useState(false)
     const [showDeleteAccount, setShowDeleteAccount] = useState(false)
 
-    const handleShowPersonalInfo = () => {
-        setShowPersonalInfo((prev) => {
+    const handleShowUserName = () => {
+        setShowUserName((prev) => {
             const newState = !prev;
             if (newState) {
+                setShowEmail(false)
+                setShowPasswordInfo(false);
+                setShowDeleteAccount(false);
+            }
+            return newState;
+        });
+    };
+
+    const handleShowEmail = () => {
+        setShowEmail((prev) => {
+            const newState = !prev;
+            if (newState) {
+                setShowUserName(false);
                 setShowPasswordInfo(false);
                 setShowDeleteAccount(false);
             }
@@ -37,7 +51,8 @@ const UpdateProfile = () => {
         setShowPasswordInfo((prev) => {
             const newState = !prev;
             if (newState) {
-                setShowPersonalInfo(false);
+                setShowUserName(false);
+                setShowEmail(false);
                 setShowDeleteAccount(false);
             }
             return newState;
@@ -48,7 +63,8 @@ const UpdateProfile = () => {
         setShowDeleteAccount((prev) => {
             const newState = !prev;
             if (newState) {
-                setShowPersonalInfo(false);
+                setShowUserName(false);
+                setShowEmail(false);;
                 setShowPasswordInfo(false);
             }
             return newState;
@@ -66,9 +82,21 @@ const UpdateProfile = () => {
     })
 
     useEffect(() => {
-        if (!showPersonalInfo) {
+        if (!showUserName) {
             setForm((prev) => {
                 let pd = { ...prev }
+                pd.email = ""
+                pd.oldPassword = ""
+                pd.password = ""
+                pd.confirmPassword = ""
+                return pd;
+            })
+        }
+
+        if (!showEmail) {
+            setForm((prev) => {
+                let pd = { ...prev }
+                pd.username = ""
                 pd.oldPassword = ""
                 pd.password = ""
                 pd.confirmPassword = ""
@@ -93,12 +121,13 @@ const UpdateProfile = () => {
             })
         }
 
-    }, [showPersonalInfo, showPasswordInfo, showDeleteAccount])
+    }, [showUserName, showEmail, showPasswordInfo, showDeleteAccount])
 
 
     const renderUpdateBtn = () => {
         const disabled = !(
-            (showPersonalInfo && (form.username.trim() !== '' || form.email.trim() !== '')) ||
+            (showUserName && (form.username.trim() !== '')) ||
+            (showEmail && (form.email.trim() !== '')) ||
             (showPasswordInfo && (form.oldPassword.trim() !== '' && form.password.trim() !== '' && form.confirmPassword.trim() !== ''))
         );
         return (
@@ -177,19 +206,19 @@ const UpdateProfile = () => {
 
                 <View>
                     <TouchableOpacity
-                        onPress={() => handleShowPersonalInfo()}
+                        onPress={() => handleShowUserName()}
                         className="flex-row justify-between items-center 
                         py-2 pt-3 border-b border-gray-300"
                     >
-                        <Text className={showPersonalInfo ?
+                        <Text className={showUserName ?
                             'ext-md text-exSec font-psemibold' :
                             'ext-md text-white font-psemibold'}
                         >
-                            Update Personal Info
+                            Update Username
                         </Text>
-                        <Text className="text-lg text-white">{showPersonalInfo ? '-' : '+'}</Text>
+                        <Text className="text-lg text-white">{showUserName ? '-' : '+'}</Text>
                     </TouchableOpacity>
-                    {showPersonalInfo && (
+                    {showUserName && (
                         <View>
                             <FormField
                                 title="Username"
@@ -202,6 +231,26 @@ const UpdateProfile = () => {
                                 keyboardType='email-address'
                                 placeholder='New Username'
                             />
+                        </View>
+                    )}
+                </View>
+
+                <View>
+                    <TouchableOpacity
+                        onPress={() => handleShowEmail()}
+                        className="flex-row justify-between items-center 
+                        py-2 pt-3 border-b border-gray-300"
+                    >
+                        <Text className={showEmail ?
+                            'ext-md text-exSec font-psemibold' :
+                            'ext-md text-white font-psemibold'}
+                        >
+                            Update Email
+                        </Text>
+                        <Text className="text-lg text-white">{showEmail ? '-' : '+'}</Text>
+                    </TouchableOpacity>
+                    {showEmail && (
+                        <View>
                             <FormField
                                 title="Email"
                                 value={form.email}
@@ -216,6 +265,9 @@ const UpdateProfile = () => {
                         </View>
                     )}
                 </View>
+
+
+
 
                 <View>
                     <TouchableOpacity
