@@ -3,6 +3,7 @@ import { checkImageByUrl, cartoonize, getPredictionById } from './aiAPI';
 import * as FileSystem from 'expo-file-system';
 import { ModalPush } from '../app/modal'
 import { router } from 'expo-router'
+import { CurrentRenderContext } from '@react-navigation/native';
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
@@ -763,7 +764,7 @@ export const updateFollowing = async (postUserId: string, following: boolean) =>
     }
 }
 
-export const deleteUser = async () => {
+export const deleteAuthUser = async () => {
 
     try {
         const currentUser = await getCurrentUser();
@@ -786,6 +787,21 @@ export const deleteUser = async () => {
     }
 
 };
+
+export const deleteUser = async () => {
+    try {
+        const currentUser = await getCurrentUser();
+        console.log('deleteUser currentUser', currentUser)
+        await databases.deleteDocument(
+            databaseId,
+            usersCollectionId,
+            currentUser.$id
+        )
+    } catch (error: any) {
+        throw new Error(error)
+
+    }
+}
 
 
 export const deleteAllPosts = async () => {
