@@ -1,4 +1,4 @@
-import { Client, Account, ID, Avatars, Databases, Query, Storage, AppwriteException } from 'react-native-appwrite';
+import { Functions, Client, Account, ID, Avatars, Databases, Query, Storage, AppwriteException } from 'react-native-appwrite';
 import { checkImageByUrl, cartoonize, getPredictionById } from './aiAPI';
 import * as FileSystem from 'expo-file-system';
 import { ModalPush } from '../app/modal'
@@ -36,6 +36,7 @@ const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
 const storage = new Storage(client);
+const functions = new Functions(client);
 
 export async function createUser(email: string, password: string, username: string) {
     try {
@@ -79,6 +80,10 @@ export async function createUser(email: string, password: string, username: stri
 export const signIn = async (email: string, password: string) => {
     try {
         const session = await account.createEmailPasswordSession(email, password);
+
+        const currentUser = await getCurrentUser();
+        console.log(currentUser)
+
         return session;
     } catch (error: any) {
         throw new Error(error);
@@ -267,7 +272,6 @@ export const getLatestPostFromUser = async (userId: string) => {
         let thisUser = posts.documents[0]?.creator
 
         if (posts.documents.length < 1) {
-            console.log('POSTS EMPTY')
             thisUser = await getUserById(userId)
         }
 
@@ -759,21 +763,28 @@ export const updateFollowing = async (postUserId: string, following: boolean) =>
     }
 }
 
-export const deleteUser = async (userId: string) => {
-    const currentUser = await getCurrentUser();
+export const deleteUser = async () => {
 
     try {
-        await account.deleteIdentity(userId);
-        const deletedUser = await databases.deleteDocument(
-            databaseId,
-            usersCollectionId,
-            currentUser.$id,
+        const currentUser = await getCurrentUser();
+        const userId = currentUser.accountId;
+
+        const functionId: any = process.env.EXPO_PUBLIC_APPWRITE_FUNCTION_ID;
+        const response = await functions.createExecution(
+            functionId,
+            JSON.stringify({ userId })
         );
-        console.log('deleting user ' + currentUser.$id)
-        return deletedUser;
-    } catch (error: any) {
-        throw new Error(error);
+
+        console.log('Delete Function Response Code', response.responseStatusCode)
+        console.log("Delete Function Response Body:", response.errors);
+
+        signOut();
+        router.replace("/sign-in");
+
+    } catch (error) {
+        console.error("Error deleting user:", error);
     }
+
 };
 
 
@@ -781,14 +792,11 @@ export const deleteAllPosts = async () => {
     const currentUser = await getCurrentUser();
 
     try {
-        //gather content
         const userPosts = await getUserPosts(currentUser.$id)
 
-        //delete content
         userPosts.forEach((post) => {
             deleteMedia(post.$id)
         })
-
 
         ModalPush('All posts Deleted', '')
         router.replace('/profile')

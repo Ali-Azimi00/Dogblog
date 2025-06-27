@@ -5,7 +5,7 @@ import { useState } from 'react'
 import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton'
 import { router } from 'expo-router'
-import { deleteAllPosts, updateProfile } from '@/lib/appwrite'
+import { deleteAllPosts, updateProfile, deleteUser } from '@/lib/appwrite'
 import { ModalPush } from '../modal'
 
 interface profileForm {
@@ -160,6 +160,7 @@ const UpdateProfile = () => {
     const submitDelete = () => {
         console.log('submit delete')
         deleteAllPosts();
+        deleteUser();
     }
 
 
